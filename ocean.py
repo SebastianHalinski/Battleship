@@ -55,8 +55,9 @@ class Ocean():
                 x = square.get_x()
                 y = square.get_y()
                 self.ocean[y - 1][x - 1] = square
-
-        return self.ocean
+            return True
+        else:
+            return False
 
     def print_ocean(self, player):
         coordinates = ('  ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
@@ -76,9 +77,10 @@ class Ocean():
 
             print("\n" + "--------------------------------------------")
 
+
 o = Ocean("player1")
 p = Ocean("player2")
-o.ocean = o.add_ship(1, 1, True, 'Carrier')
-o.ocean = o.add_ship(4, 7, False, 'Destroyer')
+o.add_ship(1, 1, True, 'Carrier')
+o.add_ship(4, 7, False, 'Destroyer')
 o.print_ocean("player1")
 o.print_ocean("player2")
