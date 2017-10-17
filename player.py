@@ -1,16 +1,17 @@
 import random
-
+from ocean import Ocean
 
 class Player():
 
     def __init__(self, name):
-        self.ocean  # init ocean
+        self.name = name
+        self.ocean = Ocean(name) # init ocean
         self.ships = []
 
     def is_winner(self, other):
         # other bo plansza przeciwnika
         for ship in other.ships:
-            if not ship is_sunk():
+            if ship is not is_sunk():
                 return False
         return True
 
@@ -85,3 +86,6 @@ class ComputerPlayer(Player):
 
     def add_ships(self):
         pass
+
+# test = Player("abc")
+# test.print_ocean()
