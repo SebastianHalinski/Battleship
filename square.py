@@ -1,10 +1,11 @@
 class Square():
-    status_empty = ' '
-    status_hit = 'X'
-    status_missed = 'O'
-    status_ship = '@'
 
-    def __init__(self, x, y, status=status_empty):
+    SQUARE_STATES = {'empty': ' ',
+                     'ship': '@',
+                     'hit': 'X',
+                     'missed': 'O'}
+
+    def __init__(self, x, y, status):
         self.x = x
         self.y = y
         self.status = status
@@ -18,33 +19,34 @@ class Square():
     # elementach ocean?
 
     def change_status_to_hit(self):
-        self.status = self.status_hit
+        self.status = self.SQUARE_STATES['hit']
 
     def change_status_to_missed(self):
-        self.status = self.status_missed
+        self.status = self.SQUARE_STATES['missed']
 
     def get_status(self):
         return self.status
 
-    # żeby inne klasy nie używały bezpośrednio atrybutów
-
     @classmethod
     def get_status_empty(cls):
-        return cls.status_empty
+        return cls.SQUARE_STATES['empty']
 
     @classmethod
     def get_status_ship(cls):
-        return cls.status_ship
+        return cls.SQUARE_STATES['ship']
 
     @classmethod
     def get_status_hit(cls):
-        return cls. status_hit
+        return cls.SQUARE_STATES['hit']
 
-# może zamiast status_ship to status_not_hit? albo coś takiego 
 
-s = Square(1, 1)
+s = Square(1, 1, Square.SQUARE_STATES['empty'])
 print(s)
 s.change_status_to_hit()
 print(s)
 s.change_status_to_missed()
 print(s)
+print(s.get_status())
+print(s.get_status_empty())
+print(s.get_status_ship())
+print(s.get_status_hit())
