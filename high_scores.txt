@@ -1,0 +1,3 @@
+Ania,1500
+BattleSheep2,1200
+BattleSheep,700
