@@ -34,13 +34,13 @@ class Ocean():
         is_ship_not_touching_other_ships(ship)
 
     def print_ocean(self): # dodac atrybut player1
-        coordinates = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
+        coordinates = ('  ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
         print("   ".join(coordinates))
         for index, y in enumerate(range(10)):
-            print(index + 1)
+            print(str(index + 1).rjust(2) + " | ", end="")
             for x in range(10):
                 print(self.ocean[y][x], end=" | ")
-            print("")
+            print("\n" + "--------------------------------------------")
 
 o = Ocean("player1")
 o.print_ocean()
