@@ -27,6 +27,12 @@ class Square():
     def get_status(self):
         return self.status
 
+    def get_x(self):
+        return self.x
+
+    def get_y(self):
+        return self.y
+
     @classmethod
     def get_status_empty(cls):
         return cls.SQUARE_STATES['empty']
@@ -40,13 +46,15 @@ class Square():
         return cls.SQUARE_STATES['hit']
 
 
-s = Square(1, 1, Square.SQUARE_STATES['empty'])
-print(s)
-s.change_status_to_hit()
-print(s)
-s.change_status_to_missed()
-print(s)
-print(s.get_status())
-print(s.get_status_empty())
-print(s.get_status_ship())
-print(s.get_status_hit())
+# s = Square(1, 1, Square.SQUARE_STATES['empty'])
+# print(s)
+# s.change_status_to_hit()
+# print(s)
+# s.change_status_to_missed()
+# print(s)
+# print(s.get_status())
+# print(s.get_status_empty())
+# print(s.get_status_ship())
+# print(s.get_status_hit())
+# print(s.get_x())
+# print(s.get_y())
