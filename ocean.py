@@ -32,8 +32,9 @@ class Ocean():
         is_ship_on_emty_spaces(ship)
         is_ship_not_touching_other_ships(ship)
 
-    def print_ocean(self, player): # dodac atrybut player1
+    def print_ocean(self, player):
         coordinates = ('  ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
+        print("Player name: " + player.owner + "\n")
         print("   ".join(coordinates))
         for index, y in enumerate(range(10)):
             print(str(index + 1).rjust(2) + " | ", end="")
