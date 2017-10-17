@@ -1,7 +1,6 @@
 from square import Square
 from ship import Ship
 
-
 class Ocean():
 
     width = 10
@@ -33,14 +32,20 @@ class Ocean():
         is_ship_on_emty_spaces(ship)
         is_ship_not_touching_other_ships(ship)
 
-    def print_ocean(self): # dodac atrybut player1
+    def print_ocean(self, player): # dodac atrybut player1
         coordinates = ('  ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
         print("   ".join(coordinates))
         for index, y in enumerate(range(10)):
             print(str(index + 1).rjust(2) + " | ", end="")
             for x in range(10):
-                print(self.ocean[y][x], end=" | ")
+                if player != self.owner and self.ocean[y][x] == "@":
+                    self.ocean[y][x] = " "
+                else:
+                    print(self.ocean[y][x], end=" | ")
+
             print("\n" + "--------------------------------------------")
 
 o = Ocean("player1")
-o.print_ocean()
+p = Ocean("player2")
+p.print_ocean(o)
+o.print_ocean(p)
