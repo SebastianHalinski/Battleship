@@ -1,8 +1,14 @@
 from square import Square
+from ship import Ship
+
 
 class Ocean():
 
+    width = 10
+    heigth = 10
+
     def __init__(self, owner):
+
         self.ocean = []
         self.owner = owner
 
@@ -12,20 +18,21 @@ class Ocean():
                 row.append(Square(x, y, Square.get_status_empty()))
             self.ocean.append(row)
 
-        #list 10 list pustych kwadratów
-        #tylko to będzie player.ocean.ocean
+    def is_ship_on_board(self, ship):
+        for square in ship.squares:
+            if square.get_x not in range(1, self.width + 1):
+                return False
+            if square.get_y not in range(1, self.height + 1):
+                return False
+        return True
 
+    def add_ship(self, x, y, is_horizontal, ship_type):
+        ship = Ship(x, y, is_horizontal, ship_type)
 
-    # def add_ship(self, x, y, is_horizontal, ship_type):
-    #     # init ship(x, y, is_horizontal)
-    #     # sprawdzenie czy nie wystaje
-    #     # czy nie zachodzi na inne statki
-    #     # czy nie dotyka innych statków
-    #
-    #     # is_ship_on_board(ship)
-    #     # is_ship_on_emty_spaces(ship)
-    #     # is_ship_not_touching_other_ships(ship)
-    #
+        is_ship_on_board(ship)
+        is_ship_on_emty_spaces(ship)
+        is_ship_not_touching_other_ships(ship)
+
     def print_ocean(self): # dodac atrybut player1
         coordinates = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
         print("   ".join(coordinates))
