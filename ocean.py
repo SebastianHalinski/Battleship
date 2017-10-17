@@ -38,7 +38,6 @@ class Ocean():
                     if i in range(self.width) and j in range(self.height):
                         ship_territory.add((i, j))
 
-        print(ship_territory)
         for coordinate in ship_territory:
             x, y = coordinate
             square = self.ocean[y][x]
