@@ -1,6 +1,5 @@
-from square import Square
 from ship import Ship
-# from player import Player
+from square import Square
 
 
 class Ocean():
@@ -77,10 +76,3 @@ class Ocean():
 
             print("\n" + "--------------------------------------------")
 
-
-o = Ocean("player1")
-p = Ocean("player2")
-o.add_ship(1, 1, True, 'Carrier')
-o.add_ship(4, 7, False, 'Destroyer')
-o.print_ocean("player1")
-o.print_ocean("player2")

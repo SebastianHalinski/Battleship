@@ -34,14 +34,3 @@ class Ship():
                 return False
         return True
 
-
-s1 = Ship(1, 1, True, 'Carrier')
-s2 = Ship(1, 1, False, 'Destroyer')
-for square in s1.squares:
-    print(square.x, square.y)
-for square in s2.squares:
-    print(square.x, square.y)
-print(s1.is_sunk())
-for square in s1.squares:
-    square.change_status_to_hit()
-print(s1.is_sunk())
