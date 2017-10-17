@@ -73,12 +73,12 @@ class ComputerPlayer(Player):
 
         if level == 'hard':
             ocean = other.ocean
-            if random.randint(1,100) % 3 == 0:
+            if random.randint(1, 100) % 3 == 0:
                 for row in ocean:
                     for square in row:
                         if square == Square.SQUARE_STATES['ship']:
                             Square.change_status_to_hit()
-                            break
+                    break
             else:
                 location = transform_cords_to_location()
                 super().shoot(other, location)
