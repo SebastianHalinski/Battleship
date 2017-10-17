@@ -27,7 +27,7 @@ class Ocean():
         return True
 
     def is_ship_location_valid(self, ship):
-        ship_territory = []
+        ship_territory = set()
 
         for square in ship.squares:
             x = square.get_x()
@@ -35,13 +35,14 @@ class Ocean():
 
             for i in range(x - 1, x + 2):
                 for j in range(y - 1, y + 2):
-                    if i in range(self.width) and j in range(self.height) and (i, j) not in ship_territory:
-                        ship_territory.append([i, j])
+                    if i in range(self.width) and j in range(self.height):
+                        ship_territory.add((i, j))
 
+        print(ship_territory)
         for coordinate in ship_territory:
             x, y = coordinate
             square = self.ocean[y][x]
-            if square.get_status() != Square.get_status_empty():
+            if square.get_status() == Square.get_status_ship():
                 return False
 
         return True
@@ -62,9 +63,9 @@ class Ocean():
         coordinates = ('  ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
         print("Player name: " + self.owner + "\n")
         print("   ".join(coordinates))
+        print("--------------------------------------------")
 
         for y in range(self.height):
-
             print(str(y + 1).rjust(2) + " | ", end="")
 
             for x in range(self.width):
@@ -75,4 +76,3 @@ class Ocean():
                     print(square, end=" | ")
 
             print("\n" + "--------------------------------------------")
-
