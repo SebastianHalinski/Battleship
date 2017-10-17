@@ -2,8 +2,10 @@ from square import Square
 
 class Ocean():
 
-    def __init__(self):
+    def __init__(self, owner):
         self.ocean = []
+        self.owner = owner
+
         for y in range(1, 11):
             row = []
             for x in range(1, 11):
@@ -24,11 +26,14 @@ class Ocean():
     #     # is_ship_on_emty_spaces(ship)
     #     # is_ship_not_touching_other_ships(ship)
     #
-    #def print_ocean(player):
-    #     if player is owner:
-    #         pass
-    #     else:
-    #         pass
+    def print_ocean(self): # dodac atrybut player1
+        coordinates = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
+        print("   ".join(coordinates))
+        for index, y in enumerate(range(10)):
+            print(index + 1)
+            for x in range(10):
+                print(self.ocean[y][x], end=" | ")
+            print("")
 
-o = Ocean()
-print(o)
+o = Ocean("player1")
+o.print_ocean()
