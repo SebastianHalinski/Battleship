@@ -1,3 +1,6 @@
+import random
+
+
 class Player():
 
     def __init__(self, name):
@@ -50,7 +53,11 @@ class ComputerPlayer(Player):
         self.difficulty_level = difficulty_level
 
     def shoot(self, level???):
-        pass
+        x_cords = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+        y_location = random.randrange(1, 10)
+        x_location = random.choice(x_cords)
+        location = str(y_location) + str(x_location)
+        super().shoot(other, location)
 
     def add_ships(self):
         pass
