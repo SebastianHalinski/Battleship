@@ -1,6 +1,7 @@
 import random
 from ocean import Ocean
 
+
 class Player():
 
     def __init__(self, name):
@@ -28,14 +29,15 @@ class Player():
 
         # zmienianie statusu tej lokacji
         # na planszy przeciwnika
+        y = int(location[1]) - 1
+
         x_cords = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-        y = location[1]
         for i in x_cords:
             if location[0] == i:
-                x = int(x_cords.index(i)) + 1
+                x = int(x_cords.index(i))
 
         ocean = other.ocean
-        square = ocean(x, y)
+        square = ocean[y][x]
         if square.get_status() == Square.SQUARE_STATES['empty']:
             Square.change_status_to_missed()
         elif square.get_status() == Square.SQUARE_STATES['ship']:

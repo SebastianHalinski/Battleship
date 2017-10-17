@@ -13,17 +13,17 @@ class Ocean():
         self.ocean = []
         self.owner = owner
 
-        for y in range(1, 11):
+        for y in range(self.height):
             row = []
-            for x in range(1, 11):
+            for x in range(self.width):
                 row.append(Square(x, y, Square.get_status_empty()))
             self.ocean.append(row)
 
     def is_ship_on_board(self, ship):
         for square in ship.squares:
-            if square.get_x() not in range(1, self.width + 1):
+            if square.get_x() not in range(self.width):
                 return False
-            if square.get_y() not in range(1, self.height + 1):
+            if square.get_y() not in range(self.height):
                 return False
         return True
 
@@ -36,8 +36,8 @@ class Ocean():
 
             for i in range(x - 1, x + 2):
                 for j in range(y - 1, y + 2):
-                    if i in range(1, self.width + 1) and j in range(1, self.height + 1) and (i, j) not in ship_territory:
-                        ship_territory.append(tuple([i, j]))
+                    if i in range(self.width) and j in range(self.height) and (i, j) not in ship_territory:
+                        ship_territory.append([i, j])
 
         for coordinate in ship_territory:
             x, y = coordinate
@@ -54,7 +54,7 @@ class Ocean():
             for square in ship.squares:
                 x = square.get_x()
                 y = square.get_y()
-                self.ocean[y - 1][x - 1] = square
+                self.ocean[y][x] = square
             return True
         else:
             return False
@@ -64,13 +64,13 @@ class Ocean():
         print("Player name: " + self.owner + "\n")
         print("   ".join(coordinates))
 
-        for index, y in enumerate(range(10)):
+        for y in range(self.height):
 
-            print(str(index + 1).rjust(2) + " | ", end="")
+            print(str(y + 1).rjust(2) + " | ", end="")
 
-            for x in range(10):
+            for x in range(self.width):
                 square = self.ocean[y][x]
-                if player != self.owner and square.get_status() == "@":
+                if player != self.owner and square.get_status() == Square.SQUARE_STATES['ship']:
                     print(" ", end=" | ")
                 else:
                     print(square, end=" | ")
