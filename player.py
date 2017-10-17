@@ -18,7 +18,7 @@ class Player():
         # pieciu rodzajów
         pass
 
-    def shoot(self, location):
+    def shoot(self, other, location):
         # zamienianie lokacji A6 na x, y
         # ta część może jako metoda statyczna?
 
@@ -30,14 +30,17 @@ class Player():
             if location[0] == i:
                 x = int(x_cords.index(i)) + 1
 
-        if Square.get_status() == Square.SQUARE_STATES['empty']:
+        ocean = other.ocean
+        square = ocean(x, y)
+        if square.get_status() == Square.SQUARE_STATES['empty']:
             Square.change_status_to_missed()
-        elif Square.get_status() == Square.SQUARE_STATES['hit']:
+        elif square.get_status() == Square.SQUARE_STATES['ship']:
             Square.change_status_to_hit()
-        elif Square.get_status == Square.SQUARE_STATES['hit']:
+        elif square.get_status == Square.SQUARE_STATES['hit']:
             return False
-        elif Square.get_status == Square.SQUARE_STATES['missed']:
+        elif square.get_status == Square.SQUARE_STATES['missed']:
             return False
+        return True
 
 
 class ComputerPlayer(Player):
