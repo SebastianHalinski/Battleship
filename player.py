@@ -18,13 +18,26 @@ class Player():
         # pieciu rodzajów
         pass
 
-    def shoot(self, location, other???)
+    def shoot(self, location):
         # zamienianie lokacji A6 na x, y
         # ta część może jako metoda statyczna?
 
         # zmienianie statusu tej lokacji
         # na planszy przeciwnika
-        pass
+        x_cords = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+        y = location[1]
+        for i in x_cords:
+            if location[0] == i:
+                x = int(x_cords.index(i)) + 1
+
+        if Square.get_status() == Square.SQUARE_STATES['empty']:
+            Square.change_status_to_missed()
+        elif Square.get_status() == Square.SQUARE_STATES['hit']:
+            Square.change_status_to_hit()
+        elif Square.get_status == Square.SQUARE_STATES['hit']:
+            return False
+        elif Square.get_status == Square.SQUARE_STATES['missed']:
+            return False
 
 
 class ComputerPlayer(Player):
