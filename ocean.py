@@ -9,14 +9,14 @@ class Ocean():
 
     def __init__(self, owner):
 
-        self.owner = owner
         self.board = []
         self.ships = []
+        self.owner = owner
 
         for y in range(self.height):
             row = []
             for x in range(self.width):
-                row.append(Square(x, y, Square.get_status_empty()))
+                row.append(Square(x, y, Square.SQUARE_STATES['empty']))
             self.board.append(row)
 
     def get_ships(self):
@@ -26,6 +26,8 @@ class Ocean():
         return self.board
 
     def is_ship_on_board(self, ship):
+        '''Return True if ship will fit on board, else False'''
+
         ship_territory = ship.get_territory()
 
         for x, y in ship_territory:
@@ -36,6 +38,8 @@ class Ocean():
         return True
 
     def is_ship_location_valid(self, ship):
+        '''Return True if ship will not overlap or touch other ships, else False'''
+
         ship_region = ship.get_region()
 
         for x, y in ship_region:
@@ -44,12 +48,14 @@ class Ocean():
             except IndexError:
                 pass
             else:
-                if square.get_status() == Square.get_status_ship():
+                if square.get_status() == Square.SQUARE_STATES['ship']:
                     return False
 
         return True
 
     def add_ship(self, x, y, is_horizontal, ship_type):
+        ''' Tries to add ship to board. Returns True if ship has been added to board, else False'''
+
         ship = Ship(x, y, is_horizontal, ship_type)
         ship_territory = ship.get_territory()
 
@@ -64,6 +70,9 @@ class Ocean():
             return False
 
     def print_ocean(self, player):
+        '''If player is the owner of the ocean prints board with all ships,
+        else board with only hit squares of ships'''
+
         coordinates = ('  ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
         print("This board belongs to: " + self.owner + "\n")
         print("   ".join(coordinates))
