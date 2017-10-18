@@ -44,17 +44,3 @@ class Square():
     @classmethod
     def get_status_hit(cls):
         return cls.SQUARE_STATES['hit']
-
-
-# s = Square(1, 1, Square.SQUARE_STATES['empty'])
-# print(s)
-# s.change_status_to_hit()
-# print(s)
-# s.change_status_to_missed()
-# print(s)
-# print(s.get_status())
-# print(s.get_status_empty())
-# print(s.get_status_ship())
-# print(s.get_status_hit())
-# print(s.get_x())
-# print(s.get_y())
