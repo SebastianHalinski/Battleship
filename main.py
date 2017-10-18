@@ -2,57 +2,9 @@ from ocean import Ocean
 from player import ComputerPlayer, Player
 from ship import Ship
 from square import Square
+from printing import *
 import sys
 import os
-
-
-def read_screen(file_name):
-    with open(file_name) as file:
-        contents = file.read()
-    return contents
-
-def print_waiting_screen(file_name):
-    os.system('clear')
-    if file_name == "waiting_for_player_1.txt":
-        waiting_screen_1 = read_screen(file_name)
-        print(waiting_screen_1)
-        input('Press enter to continue: ')
-
-    elif file_name == "waiting_for_player_2.txt":
-        waiting_screen_2 = read_screen("waiting_for_player_2.txt")
-        print(waiting_screen_2)
-        input('Press enter to continue: ')
-
-
-def print_starting_screen():
-    os.system('clear')
-    introduction_screen = read_screen('intro.txt')
-    print(introduction_screen)
-    input('Press enter to continue: ')
-
-
-def print_how_to_play():
-    os.system('clear')
-    how_to_play_screen = read_screen('how_to_play.txt')
-    print(how_to_play_screen)
-    input('Press enter to quit: ')
-
-
-def print_hall_of_fame():
-    os.system('clear')
-    contents = []
-    with open('high_scores.txt') as file:
-        for line in file:
-            sublist = line.strip().split(',')
-            contents.append(sublist)
-    print('\n\n\n\n')
-    print("HALL OF FAME:\n\n")
-    print('NAME'.rjust(10), 'SCORE'.ljust(10))
-    for sublist in contents:
-        print(sublist[0].rjust(10), end=' ')
-        print(sublist[1].ljust(10))
-    print('\n')
-    input('Press enter to quit: ')
 
 
 def menu():
@@ -98,118 +50,44 @@ def main():
         elif user_input == "0":
             exit()
 
+
+def add_ships(player):
+    ocean = player.get_ocean()
+    print("Place your ships on board!")
+    for ship_type in Ship.SHIP_TYPE_TO_LENGTH:
+        ship_length = Ship.SHIP_TYPE_TO_LENGTH[ship_type]
+        print("{} is {} squares long".format(ship_type, ship_length))
+        x, y, is_horizontal = get_ship_details()
+        result = ocean.add_ship(x, y, is_horizontal, ship_type)
+        while not result:
+            print("Wrong location! Try again")
+            x, y, is_horizontal = get_ship_details()
+            result = ocean.add_ship(x, y, is_horizontal, ship_type)
+        ocean.print_ocean(player.get_name())
+
+
 def multiplayer_game(first_player, second_player):
 
-    print("Place your ships on board!")
-    print("First is Carrier(5 squares length)")
-    x, y, is_horizontal = place_ship_on_ocean()
-    ship = first_player.get_ocean().add_ship(x, y, is_horizontal, 'Carrier')
-    while ship is not True:
-        print("Wrong location! Try again")
-        x, y, is_horizontal = place_ship_on_ocean()
-        ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Carrier')
-    first_player.ocean.print_ocean(first_player.get_name())
-
-    # print("Second is Battleship(4 squares length)")
-    # x, y, is_horizontal = place_ship_on_ocean()
-    # ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Battleship')
-    # while ship is not True:
-    #     print("Wrong location! Try again")
-    #     x, y, is_horizontal = place_ship_on_ocean()
-    #     ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Battleship')
-    # first_player.ocean.print_ocean(first_player.get_name())
-    #
-    # print("Third is Cruiser(3 squares length)")
-    # x, y, is_horizontal = place_ship_on_ocean()
-    # ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Cruiser')
-    # while ship is not True:
-    #     print("Wrong location! Try again")
-    #     x, y, is_horizontal = place_ship_on_ocean()
-    #     ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Cruiser')
-    # first_player.ocean.print_ocean(first_player.get_name())
-    #
-    # print("Fourth is Submarine(3 squares length)")
-    # x, y, is_horizontal = place_ship_on_ocean()
-    # ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Submarine')
-    # while ship is not True:
-    #     print("Wrong location! Try again")
-    #     x, y, is_horizontal = place_ship_on_ocean()
-    #     ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Submarine')
-    # first_player.ocean.print_ocean(first_player.get_name())
-    #
-    # print("Fifth is Destroyer(2 squares length)")
-    # x, y, is_horizontal = place_ship_on_ocean()
-    # ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Destroyer')
-    # while ship is not True:
-    #     print("Wrong location! Try again")
-    #     x, y, is_horizontal = place_ship_on_ocean()
-    #     ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Destroyer')
-
-    first_player.ocean.print_ocean(first_player.get_name())
-
-    # funkcja ktora bedzie wolac drugiego player
+    add_ships(first_player)
     os.system("clear")
     print("Second player")
-
-    print("Place your ships on board!")
-    print("First is Carrier(5 squares length)")
-    x, y, is_horizontal = place_ship_on_ocean()
-    ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Carrier')
-    while ship is not True:
-        print("Wrong location! Try again")
-        x, y, is_horizontal = place_ship_on_ocean()
-        ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Carrier')
-    second_player.ocean.print_ocean(second_player.get_name())
-
-    # print("Second is Battleship(4 squares length)")
-    # x, y, is_horizontal = place_ship_on_ocean()
-    # ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Battleship')
-    # while ship is not True:
-    #     print("Wrong location! Try again")
-    #     x, y, is_horizontal = place_ship_on_ocean()
-    #     ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Battleship')
-    # second_player.ocean.print_ocean(second_player.get_name())
-    #
-    # print("Third is Cruiser(3 squares length)")
-    # x, y, is_horizontal = place_ship_on_ocean()
-    # ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Cruiser')
-    # while ship is not True:
-    #     print("Wrong location! Try again")
-    #     x, y, is_horizontal = place_ship_on_ocean()
-    #     ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Cruiser')
-    # second_player.ocean.print_ocean(second_player.get_name())
-    #
-    # print("Fourth is Submarine(3 squares length)")
-    # x, y, is_horizontal = place_ship_on_ocean()
-    # ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Submarine')
-    # while ship is not True:
-    #     print("Wrong location! Try again")
-    #     x, y, is_horizontal = place_ship_on_ocean()
-    #     ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Submarine')
-    # second_player.ocean.print_ocean(second_player.get_name())
-    #
-    # print("Fifth is Destroyer(2 squares length)")
-    # x, y, is_horizontal = place_ship_on_ocean()
-    # ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Destroyer')
-    # while ship is not True:
-    #     print("Wrong location! Try again")
-    #     x, y, is_horizontal = place_ship_on_ocean()
-    #     ship = second_player.ocean.add_ship(x, y, is_horizontal, 'Destroyer')
-
-    second_player.ocean.print_ocean(second_player.get_name())
-
-    # Funkcja ktora bedzie wolac 1 playera
+    add_ships(second_player)
 
     while True:
         print_waiting_screen("waiting_for_player_1.txt")
         first_player.ocean.print_ocean(first_player.get_name())
         second_player.ocean.print_ocean(first_player.get_name())
+<<<<<<< Updated upstream
         while True:
             location = input("Enter a your shoot location(like E6): ").upper()
             list_alfa = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
             if location[0] in list_alfa and location[1:].isnumeric() and int(location[1:]) <= 10:
                 x, y = conver_location_to_coordinates(location)
                 break
+=======
+        location = input("Enter a your shoot location(like E6): ")
+        x, y = convert_location_to_coordinates(location)
+>>>>>>> Stashed changes
         first_player.shoot(second_player, x, y)
         second_player.ocean.print_ocean(first_player.get_name())
         input()
@@ -221,29 +99,7 @@ def multiplayer_game(first_player, second_player):
     #Funkcja strzal
 
 
-
-def place_ship_on_ocean():
-
-    is_horizontal = input("Enter H to place ship horizontal or V to place ship vertical")
-    while is_horizontal != "H" and is_horizontal != "h" and is_horizontal != "V" and is_horizontal != "v":
-        is_horizontal = input("Enter H to place ship horizontal or V to place ship vertical")
-
-    if is_horizontal == "H" or is_horizontal == "h":
-        is_horizontal = True
-    else:
-        is_horizontal = False
-
-    while True:
-        location = input("Enter a ship location(like E6): ").upper()
-        list_alfa = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-        if location[0] in list_alfa and location[1:].isnumeric() and int(location[1:]) <= 10:
-            x, y = conver_location_to_coordinates(location)
-            break
-
-    return x, y, is_horizontal
-
-
-def conver_location_to_coordinates(location):
+def convert_location_to_coordinates(location):
     y = int(location[1:]) - 1
 
     x_cords = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
@@ -254,44 +110,31 @@ def conver_location_to_coordinates(location):
     return x, y
 
 
+def get_ship_details():
+
+    is_horizontal = input("Enter H to place ship horizontally or V to place ship vertically: ")
+    while is_horizontal != "H" and is_horizontal != "h" and is_horizontal != "V" and is_horizontal != "v":
+        is_horizontal = input("Enter H to place ship horizontally or V to place ship vertically: ")
+
+    if is_horizontal == "H" or is_horizontal == "h":
+        is_horizontal = True
+    else:
+        is_horizontal = False
+
+<<<<<<< Updated upstream
+    while True:
+        location = input("Enter a ship location(like E6): ").upper()
+        list_alfa = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+        if location[0] in list_alfa and location[1:].isnumeric() and int(location[1:]) <= 10:
+            x, y = conver_location_to_coordinates(location)
+            break
+=======
+    location = input("Enter a ship location(like E6): ").upper()
+    x, y = convert_location_to_coordinates(location)
+>>>>>>> Stashed changes
+
+    return x, y, is_horizontal
+
+
 if __name__ == "__main__":
     main()
-
-
-
-
-
-# s = Square(1, 1, Square.SQUARE_STATES['empty'])
-# print(s)
-# s.change_status_to_hit()
-# print(s)
-# s.change_status_to_missed()
-# print(s)
-# print(s.get_status())
-# print(s.get_status_empty())
-# print(s.get_status_ship())
-# print(s.get_status_hit())
-# print(s.get_x())
-# print(s.get_y())
-
-# s1 = Ship(1, 1, True, 'Carrier')
-# s2 = Ship(1, 1, False, 'Destroyer')
-# for square in s1.squares:
-#     print(square.x, square.y)
-# for square in s2.squares:
-#     print(square.x, square.y)
-# print(s1.is_sunk())
-# for square in s1.squares:
-#     square.change_status_to_hit()
-# print(s1.is_sunk())
-#
-# o = Ocean("player1")
-# p = Ocean("player2")
-# o.add_ship(1, 1, True, 'Carrier')
-# o.add_ship(4, 7, False, 'Destroyer')
-# o.print_ocean("player1")
-# o.print_ocean("player2")
-
-
-# test = Player("abc")
-# test.print_ocean()
