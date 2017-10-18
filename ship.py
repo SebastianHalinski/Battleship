@@ -12,11 +12,13 @@ class Ship():
     def __init__(self, x, y, is_horizontal, ship_type):
         self.x = x
         self.y = y
+        self.ship_type = ship_type
         self.is_horizontal = is_horizontal
-        # self.ship_type = ship_type
         self.length = self.SHIP_TYPE_TO_LENGTH[ship_type]
 
     def get_territory(self):
+        '''Returns coordinates of ship in form of set of tuples of x, y'''
+
         ship_territory = set()
 
         if self.is_horizontal:
@@ -30,6 +32,8 @@ class Ship():
         return ship_territory
 
     def get_region(self):
+        '''Returns coordinates of ship and its surroundings in form of set of tuples of x, y'''
+
         ship_region = set()
         ship_territory = self.get_territory()
 
@@ -45,7 +49,7 @@ class Ship():
         ship_territory = self.get_territory()
         for x, y in ship_territory:
             square = board[y][x]
-            if square.get_status() == Square.get_status_ship():
+            if square.get_status() == Square.SQUARE_STATES['ship']:
                 return False
-                
+
         return True
