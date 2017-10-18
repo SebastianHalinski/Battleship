@@ -13,7 +13,7 @@ class Player():
     def is_winner(self, other):
         other_ocean = other.get_ocean()
         for ship in other_ocean.get_ships():
-            if not ship.is_sunk():
+            if not ship.is_sunk(other.get_ocean().board):
                 return False
         return True
 
@@ -81,7 +81,7 @@ class ComputerPlayer(Player):
         #     self.do_not_shoot.append(x, y)
         # elif square.get_status() == Square.SQUARE_STATES['ship']:
         #     square.set_status('hit')
-        #     ship = 
+        #     ship =
         #     if square.ship.is_sunk():
         #         self.move_ship_territory_to_do_not_shoot(ship)
         #     else:
