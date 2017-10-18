@@ -1,10 +1,10 @@
+import os
+import sys
+
 from ocean import Ocean
 from player import ComputerPlayer, Player
 from ship import Ship
 from square import Square
-from printing import *
-import sys
-import os
 
 
 def menu():
@@ -19,48 +19,22 @@ Press 0 to exit
 """)
 
 
-def main():
-    print_starting_screen()
-    user_input = ""
-
-    while True: #user_input != "1" and user_input != "2" and user_input != "3" and user_input != "4" and user_input != "0":
-
-        os.system('clear')
-        menu()
-
-        user_input = input("Your choice: ")
-        if user_input == "1":
-            multiplayer_game()
-
-        elif user_input == "2":
-            player_name = input("Enter your name: ")
-            player = Player(player_name)
-            single_name(player_name)
-
-        elif user_input == "3":
-            print_how_to_play()
-
-        elif user_input == '4':
-            print_hall_of_fame()
-
-        elif user_input == "0":
-            exit()
+def press_enter_to_continue():
+    input('Press enter to continue: ')
 
 
-def add_ships(player):
-    ocean = player.get_ocean()
-    print("Place your ships on board!")
-    for ship_type in Ship.SHIP_TYPE_TO_LENGTH:
-        ship_length = Ship.SHIP_TYPE_TO_LENGTH[ship_type]
-        print("{} is {} squares long".format(ship_type, ship_length))
-        x, y, is_horizontal = get_ship_details()
-        result = ocean.add_ship(x, y, is_horizontal, ship_type)
-        while not result:
-            print("Wrong location! Try again")
-            x, y, is_horizontal = get_ship_details()
-            result = ocean.add_ship(x, y, is_horizontal, ship_type)
-        ocean.print_ocean(player.get_name())
-        break
+def read_screen(file_name):
+    with open(file_name) as file:
+        contents = file.read()
+    return contents
+
+
+def print_screen(file_name):
+    os.system('clear')
+    screen = read_screen(file_name)
+    print(screen)
+    input('Press enter to continue: ')
+    os.system('clear')
 
 
 def get_correct_locations():
@@ -71,46 +45,6 @@ def get_correct_locations():
         for b in list_num:
             correct_locations.append(a + b)
     return correct_locations
-
-
-def multiplayer_game():
-
-    print("First player")
-    first_player_name = input("Enter the name of the first player: ")
-    first_player = Player(first_player_name)
-    first_player.ocean.print_ocean(first_player.get_name())
-    add_ships(first_player)
-    input("Press any button to continue")
-    #os.system("clear")
-    print("Second player")
-    second_player_name = input("Enter the name of second player: ")
-    second_player = Player(second_player_name)
-    second_player.ocean.print_ocean(second_player.get_name())
-    add_ships(second_player)
-    input("Press any button to continue")
-
-    while True:
-        print_waiting_screen("waiting_for_player_1.txt")
-        first_player.ocean.print_ocean(first_player.get_name())
-        second_player.ocean.print_ocean(first_player.get_name())
-        while True:
-            location = input("Enter your shoot location(like E6): ").upper()
-            correct_locations = get_correct_locations()
-            if location in correct_locations:
-                x, y = convert_location_to_coordinates(location)
-                break
-        first_player.shoot(second_player, x, y)
-        ship = first_player.get_ship_from_coordinates(second_player, x, y)
-        if ship.is_sunk(second_player.get_ocean().get_board()):
-            print("Ship is sunk")
-        second_player.ocean.print_ocean(first_player.get_name())
-        input("Press any button to continue")
-        win = first_player.is_winner(second_player)
-        if win == True:
-            print_win_screen()
-            main()
-
-        first_player, second_player = second_player, first_player
 
 
 def convert_location_to_coordinates(location):
@@ -124,26 +58,134 @@ def convert_location_to_coordinates(location):
     return x, y
 
 
-def get_ship_details():
+def get_is_horizontal():
+    possible_answers = ('H', 'h', 'V', 'v')
+    answer_to_is_horzontal = {'H': True, 'V': False}
+    answer = None
+    while answer not in possible_answers:
+        answer = input("Enter H to place ship horizontally or V to place ship vertically: ").upper()
+    is_horizontal = answer_to_is_horzontal[answer]
 
-    is_horizontal = input("Enter H to place ship horizontally or V to place ship vertically: ")
-    while is_horizontal != "H" and is_horizontal != "h" and is_horizontal != "V" and is_horizontal != "v":
-        is_horizontal = input("Enter H to place ship horizontally or V to place ship vertically: ")
+    return is_horizontal
 
-    if is_horizontal == "H" or is_horizontal == "h":
-        is_horizontal = True
-    else:
-        is_horizontal = False
+
+def get_location():
+    correct_locations = get_correct_locations()
+    location = None
+    while location not in correct_locations:
+        location = input("Enter the ship's location (e. g. E6): ").upper()
+
+    return location
+
+
+def add_ships(player):
+    ocean = player.get_ocean()
+    print("Place your ships on board!")
+    for ship_type in Ship.SHIP_TYPE_TO_LENGTH:
+        ship_length = Ship.SHIP_TYPE_TO_LENGTH[ship_type]
+        print("{} is {} squares long".format(ship_type, ship_length))
+
+        is_horizontal = get_is_horizontal()
+        location = get_location()
+        x, y = convert_location_to_coordinates(location)
+        result = ocean.add_ship(x, y, is_horizontal, ship_type)
+        while not result:
+            print("Wrong location! Try again")
+            is_horizontal = get_is_horizontal()
+            location = get_location()
+            x, y = convert_location_to_coordinates(location)
+            result = ocean.add_ship(x, y, is_horizontal, ship_type)
+
+        ocean.print_ocean(player.get_name())
+        break
+
+
+def set_up_player():
+    player_name = None
+    while not player_name:
+        player_name = input("What's your name? ")
+    player = Player(player_name)
+    ocean = player.get_ocean()
+    ocean.print_ocean(player_name)
+    add_ships(player)
+    press_enter_to_continue()
+    os.system("clear")
+
+    return player
+
+
+def multiplayer_game():
+    waiting_screen = "waiting_for_player_1.txt"
+    waiting_screen_2 = "waiting_for_player_2.txt"
+
+    print_screen("waiting_for_player_1.txt")
+    player_1 = set_up_player()
+    print_screen("waiting_for_player_2.txt")
+    player_2 = set_up_player()
+    player, enemy = player_1, player_2
 
     while True:
-        location = input("Enter a ship location(like E6): ").upper()
-        correct_locations = get_correct_locations()
-        if location in correct_locations:
-            x, y = convert_location_to_coordinates(location)
+        player_ocean = player.get_ocean()
+        enemy_ocean = enemy.get_ocean()
+        player_name = player.get_name()
+        enemy_name = enemy.get_name()
+
+        print_screen(waiting_screen)
+        player_ocean.print_ocean(player_name)
+        enemy_ocean.print_ocean(player_name)
+
+        shot_location = get_location()
+        x, y = convert_location_to_coordinates(shot_location)
+        result = player.shoot(enemy, x, y)
+        # while not result:
+        #     print("You've already tried this place! Try again!")
+        #     result = player.shoot(enemy, x, y)
+
+        possible_ship = player.get_ship_from_coordinates(enemy, x, y)
+        if possible_ship:
+            ship = possible_ship
+            if ship.is_sunk(enemy_ocean.get_board()):
+                print("{} is sunk!".format(ship.ship_type))
+            else:
+                print("Ship is hit!")
+        else:
+            print("You missed!")
+
+        enemy_ocean.print_ocean(player_name)
+        press_enter_to_continue()
+
+        if player.is_winner(enemy):
+            print_screen('you_win.txt')
+            main()
+
+        player, enemy = enemy, player
+        waiting_screen = waiting_screen_2
+
+
+def main():
+    print_screen('intro.txt')
+
+    while True:
+        menu()
+        user_input = input("Your choice: ")
+
+        if user_input == "1":
+            multiplayer_game()
+
+        elif user_input == "2":
+            single_game()
+
+        elif user_input == "3":
+            print_screen('how_to_play.txt')
+
+        elif user_input == '4':
+            print_hall_of_fame()
+
+        elif user_input == "0":
             break
 
-    return x, y, is_horizontal
-
+        else:
+            print('\nWrong input!\n')
 
 
 if __name__ == "__main__":
