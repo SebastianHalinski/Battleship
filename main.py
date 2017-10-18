@@ -66,6 +66,16 @@ def add_ships(player):
         ocean.print_ocean(player.get_name())
 
 
+def get_correct_locations():
+    list_alfa = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+    list_num = [str(num) for num in range(1, 11)]
+    correct_locations = []
+    for a in list_alfa:
+        for b in list_num:
+            correct_locations.append(a + b)
+    return correct_locations
+
+
 def multiplayer_game(first_player, second_player):
 
     add_ships(first_player)
@@ -77,23 +87,20 @@ def multiplayer_game(first_player, second_player):
         print_waiting_screen("waiting_for_player_1.txt")
         first_player.ocean.print_ocean(first_player.get_name())
         second_player.ocean.print_ocean(first_player.get_name())
-<<<<<<< Updated upstream
         while True:
-            location = input("Enter a your shoot location(like E6): ").upper()
-            list_alfa = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-            if location[0] in list_alfa and location[1:].isnumeric() and int(location[1:]) <= 10:
-                x, y = conver_location_to_coordinates(location)
+            location = input("Enter your shoot location(like E6): ").upper()
+            correct_locations = get_correct_locations()
+            if location in correct_locations:
+                x, y = convert_location_to_coordinates(location)
                 break
-=======
-        location = input("Enter a your shoot location(like E6): ")
-        x, y = convert_location_to_coordinates(location)
->>>>>>> Stashed changes
         first_player.shoot(second_player, x, y)
         second_player.ocean.print_ocean(first_player.get_name())
         input()
         win = first_player.is_winner(second_player)
         if win == True:
             exit()
+        first_player, second_player = second_player, first_player
+    
     #Funkcja pokazujca plansze swoja i przeciwnika
 
     #Funkcja strzal
@@ -121,17 +128,12 @@ def get_ship_details():
     else:
         is_horizontal = False
 
-<<<<<<< Updated upstream
     while True:
         location = input("Enter a ship location(like E6): ").upper()
-        list_alfa = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-        if location[0] in list_alfa and location[1:].isnumeric() and int(location[1:]) <= 10:
-            x, y = conver_location_to_coordinates(location)
+        correct_locations = get_correct_locations()
+        if location in correct_locations:
+            x, y = convert_location_to_coordinates(location)
             break
-=======
-    location = input("Enter a ship location(like E6): ").upper()
-    x, y = convert_location_to_coordinates(location)
->>>>>>> Stashed changes
 
     return x, y, is_horizontal
 
