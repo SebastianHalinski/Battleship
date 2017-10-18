@@ -33,7 +33,8 @@ def main():
             # how to play
             pass
         if user_input == '4':
-            pass # Hall of fame
+            # Hall of fame
+            pass
         if user_input == "0":
             exit()
 
