@@ -9,14 +9,18 @@ class Ocean():
 
     def __init__(self, owner):
 
-        self.ocean = []
         self.owner = owner
+        self.ocean = []
+        self.ships = []
 
         for y in range(self.height):
             row = []
             for x in range(self.width):
                 row.append(Square(x, y, Square.get_status_empty()))
             self.ocean.append(row)
+
+    def get_ships(self):
+        return self.ships
 
     def is_ship_on_board(self, ship):
         for square in ship.squares:
@@ -54,13 +58,15 @@ class Ocean():
                 x = square.get_x()
                 y = square.get_y()
                 self.ocean[y][x] = square
+            self.ships.append(ship)
             return True
+
         else:
             return False
 
     def print_ocean(self, player):
         coordinates = ('  ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
-        print("Player name: " + self.owner + "\n")
+        print("Player name: " + self.owner.get_name() + "\n")
         print("   ".join(coordinates))
         print("--------------------------------------------")
 

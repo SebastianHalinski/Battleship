@@ -8,12 +8,13 @@ class Player():
 
     def __init__(self, name):
         self.name = name
-        self.ocean = Ocean(name)
+        self.ocean = Ocean(self)
         #self.ships = []
 
     def is_winner(self, other):
-        for ship in other.ships:
-            if ship is not is_sunk():
+        other_ocean = other.get_ocean()
+        for ship in other_ocean.get_ships():
+            if not ship.is_sunk():
                 return False
         return True
 
@@ -24,14 +25,20 @@ class Player():
         # pieciu rodzajów
         # pass
 
+    def get_ocean(self):
+        return self.ocean
+
+    def get_name(self):
+        return self.name
+
     def shoot(self, other, x, y):
 
-        ocean = other.ocean
-        square = ocean[y][x]
+        ocean = other.get_ocean()
+        square = ocean.ocean[y][x]
         if square.get_status() == Square.SQUARE_STATES['empty']:
-            Square.change_status_to_missed()
+            square.change_status_to_missed()
         elif square.get_status() == Square.SQUARE_STATES['ship']:
-            Square.change_status_to_hit()
+            square.change_status_to_hit()
         elif square.get_status == Square.SQUARE_STATES['hit']:
             return False
         elif square.get_status == Square.SQUARE_STATES['missed']:
