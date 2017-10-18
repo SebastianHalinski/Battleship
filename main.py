@@ -217,7 +217,7 @@ def multiplayer_game(first_player, second_player):
 
     # Funkcja ktora bedzie wolac 1 playera
 
-    # gra start
+    while 
 
     #Funkcja pokazujca plansze swoja i przeciwnika
 
