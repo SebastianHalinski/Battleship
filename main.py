@@ -99,13 +99,11 @@ def place_ship_on_ocean():
     else:
         is_horizontal = False
 
-    x = int(input("Enter a width: "))
-    y = int(input("Enter a height: "))
+    location = input("Enter a ship location(like E6): ")
+    x, y = conver_location_to_coordinates(location)
+    print(x, y)
 
-    return x - 1, y - 1, is_horizontal
-
-if __name__ == "__main__":
-    main()
+    return x + 1, y + 1, is_horizontal
 
 
 def conver_location_to_coordinates(location):
@@ -117,6 +115,13 @@ def conver_location_to_coordinates(location):
             x = int(x_cords.index(i))
 
     return x, y
+
+
+if __name__ == "__main__":
+    main()
+
+
+
 
 
 # s = Square(1, 1, Square.SQUARE_STATES['empty'])
