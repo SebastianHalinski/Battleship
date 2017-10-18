@@ -22,6 +22,9 @@ class Ocean():
     def get_ships(self):
         return self.ships
 
+    def get_board(self):
+        return self.board
+
     def is_ship_on_board(self, ship):
         ship_territory = ship.get_territory()
 
