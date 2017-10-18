@@ -3,6 +3,71 @@ from player import ComputerPlayer, Player
 from ship import Ship
 from square import Square
 
+menu = """Enter an action:
+
+Press 1 to create game player versus player
+Press 2 to create game player versus computer
+Press 3 to quit
+"""
+
+
+def main():
+    user_input = ""
+    while user_input != "1" and user_input != "2" and user_input != "3":
+        print(menu)
+        user_input = input("Enter: ")
+        if user_input == "1":
+            first_player_name = input("Enter a name of first player: ")
+            second_player_name = input("Enter a name of second player: ")
+            first_player = Player(first_player_name)
+            second_player = Player(second_player_name)
+            multiplayer_game(first_player, second_player)
+
+        if user_input == "2":
+            player_name = input("Enter a name of first player: ")
+            player = Player(player_name)
+            single_name(player_name)
+
+        if user_input == "3":
+            exit()
+
+def multiplayer_game(first_player, second_player):
+
+    print("Place your ships on board!")
+    print("First is Carrier(5 squares length)")
+    x, y, is_horizontal = place_ship_on_ocean()
+    first_player.ocean.add_ship(x, y, is_horizontal, 'Carrier')
+    x, y, is_horizontal = place_ship_on_ocean()
+    first_player.ocean.add_ship(x, y, is_horizontal, 'Battleship')
+    x, y, is_horizontal = place_ship_on_ocean()
+    first_player.ocean.add_ship(x, y, is_horizontal, 'Cruiser')
+    x, y, is_horizontal = place_ship_on_ocean()
+    first_player.ocean.add_ship(x, y, is_horizontal, 'Submarine')
+    x, y, is_horizontal = place_ship_on_ocean()
+    first_player.ocean.add_ship(x, y, is_horizontal, 'Destroyer')
+    first_player.ocean.print_ocean(first_player.name)
+
+
+
+def place_ship_on_ocean():
+
+    is_horizontal = input("Enter H to place ship horizontal or V to place ship vertical")
+    while is_horizontal != "H" and is_horizontal != "h" and is_horizontal != "V" and is_horizontal != "v":
+        is_horizontal = input("Enter H to place ship horizontal or V to place ship vertical")
+
+    if is_horizontal == "H" or is_horizontal == "h":
+        is_horizontal = True
+    else:
+        is_horizontal = False
+
+    x = int(input("Enter a width: "))
+    y = int(input("Enter a height: "))
+
+    return x - 1, y - 1, is_horizontal
+
+if __name__ == "__main__":
+    main()
+
 
 def conver_location_to_coordinates(location):
     y = int(location[1]) - 1
@@ -28,23 +93,23 @@ def conver_location_to_coordinates(location):
 # print(s.get_x())
 # print(s.get_y())
 
-s1 = Ship(1, 1, True, 'Carrier')
-s2 = Ship(1, 1, False, 'Destroyer')
-for square in s1.squares:
-    print(square.x, square.y)
-for square in s2.squares:
-    print(square.x, square.y)
-print(s1.is_sunk())
-for square in s1.squares:
-    square.change_status_to_hit()
-print(s1.is_sunk())
-
-o = Ocean("player1")
-p = Ocean("player2")
-o.add_ship(1, 1, True, 'Carrier')
-o.add_ship(4, 7, False, 'Destroyer')
-o.print_ocean("player1")
-o.print_ocean("player2")
+# s1 = Ship(1, 1, True, 'Carrier')
+# s2 = Ship(1, 1, False, 'Destroyer')
+# for square in s1.squares:
+#     print(square.x, square.y)
+# for square in s2.squares:
+#     print(square.x, square.y)
+# print(s1.is_sunk())
+# for square in s1.squares:
+#     square.change_status_to_hit()
+# print(s1.is_sunk())
+#
+# o = Ocean("player1")
+# p = Ocean("player2")
+# o.add_ship(1, 1, True, 'Carrier')
+# o.add_ship(4, 7, False, 'Destroyer')
+# o.print_ocean("player1")
+# o.print_ocean("player2")
 
 
 # test = Player("abc")
