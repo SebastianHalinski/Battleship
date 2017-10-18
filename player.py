@@ -12,8 +12,10 @@ class Player():
 
     def is_winner(self, other):
         other_ocean = other.get_ocean()
-        for ship in other_ocean.get_ships():
-            if not ship.is_sunk(other.get_ocean().board):
+        other_ships = other_ocean.get_ships()
+        other_board = other_ocean.get_board()
+        for ship in other_ships:
+            if not ship.is_sunk(other_board):
                 return False
         return True
 
@@ -69,26 +71,62 @@ class ComputerPlayer(Player):
     #         else:
     #             super().shoot(other, x, y)
 
+    @staticmethod
+    def get_surroundings(x, y):
+
+        surroundings = set()
+
+        for i in range(x - 1, x + 2):
+            for j in range(y - 1, y + 2):
+                if (i, j) != (x, y) and i in range(Ocean.width) and j in range(Ocean.height): 
+                    surroundings.add((x, y))
+
+        return surroundings
+
     def choose_shot(self):
+        if unsunk_hits:
+            for hit in self.unsunk_hits:
+                surroundings = get_surroundings(*hit)
+                for shot in surroundings:
+                    if shot not in self.do_not_shoot:
+                        return shot
+
+        else:
+            x = random.randrange(Ocean.width)
+            y = random.randrange(Ocean.height)
+            while (x, y) in self.do_not_shoot:
+                x = random.randrange(Ocean.width)
+                y = random.randrange(Ocean.height)
+            return x, y
+
+    def get_ship_from_coordinates(self, other, x, y):
+        other_ocean = other.get_ocean()
+        other_ships = other.get_ships()
+        for ship in other_ships:
+            ship_region = ship.get_region()
+            if (x, y) in ship_region:
+                return ship
+
+    def mark_ship_territory_as_do_not_shoot(self):
+        #self.unsunk_hits.sort()
         pass
 
     def shoot(self, other, x, y):
 
-        # ocean = other.get_ocean()
-        # square = ocean.ocean[y][x]
-        # if square.get_status() == Square.SQUARE_STATES['empty']:
-        #     square.set_status('missed')
-        #     self.do_not_shoot.append(x, y)
-        # elif square.get_status() == Square.SQUARE_STATES['ship']:
-        #     square.set_status('hit')
-        #     ship =
-        #     if square.ship.is_sunk():
-        #         self.move_ship_territory_to_do_not_shoot(ship)
-        #     else:
-        #         self.unsunk_hits.append(x, y)
+        ocean = other.get_ocean()
+        square = ocean.board[y][x]
+        if square.get_status() == Square.SQUARE_STATES['empty']:
+            square.set_status('missed')
+            self.do_not_shoot.append(x, y)
+        elif square.get_status() == Square.SQUARE_STATES['ship']:
+            square.set_status('hit')
+            ship = self.get_ship_from_coordinates(other, x, y)
+            if square.ship.is_sunk():
+                self.move_ship_territory_to_do_not_shoot(ship)
+            else:
+                self.unsunk_hits.append(x, y)
 
-        # return True
-        pass
+        return True
 
     def add_ships(self):
         pass
