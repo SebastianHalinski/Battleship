@@ -10,7 +10,15 @@ class Player():
         self.name = name
         self.ocean = Ocean(name)
 
+    def get_ocean(self):
+        return self.ocean
+
+    def get_name(self):
+        return self.name
+
     def is_winner(self, other):
+        ''' Returns True if all ships on enemy's board are sunk, else False'''
+
         other_ocean = other.get_ocean()
         other_ships = other_ocean.get_ships()
         other_board = other_ocean.get_board()
@@ -19,13 +27,8 @@ class Player():
                 return False
         return True
 
-    def get_ocean(self):
-        return self.ocean
-
-    def get_name(self):
-        return self.name
-
     def shoot(self, other, x, y):
+        ''' Returns True if hit square was not hit before, else False'''
 
         ocean = other.get_ocean()
         square = ocean.board[y][x]
@@ -41,11 +44,14 @@ class Player():
         return True
 
     def get_ship_from_coordinates(self, other, x, y):
+        ''' If square at location x, y on enemy's board is a part of a ship it returns that ship.
+        Else return None'''
+
         other_ocean = other.get_ocean()
         other_ships = other.ocean.get_ships()
         for ship in other_ships:
-            ship_region = ship.get_region()
-            if (x, y) in ship_region:
+            ship_territory = ship.get_territory()
+            if (x, y) in ship_territory:
                 return ship
 
 
@@ -106,15 +112,6 @@ class ComputerPlayer(Player):
                 x = random.randrange(Ocean.width)
                 y = random.randrange(Ocean.height)
             return x, y
-
-    def get_ship_from_coordinates(self, other, x, y):
-        other_ocean = other.get_ocean()
-        other_ships = other.get_ships()
-        for ship in other_ships:
-            ship_region = ship.get_region()
-            for coordinates in ship_region:
-                if (x, y) == coordinates:
-                    return ship
 
     def mark_ship_territory_as_do_not_shoot(self):
         #self.unsunk_hits.sort()
