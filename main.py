@@ -36,16 +36,49 @@ def multiplayer_game(first_player, second_player):
     print("Place your ships on board!")
     print("First is Carrier(5 squares length)")
     x, y, is_horizontal = place_ship_on_ocean()
-    first_player.ocean.add_ship(x, y, is_horizontal, 'Carrier')
+    ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Carrier')
+    while ship is not True:
+        print("Wrong location! Try again")
+        x, y, is_horizontal = place_ship_on_ocean()
+        ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Carrier')
+    first_player.ocean.print_ocean(first_player)
+
+    print("Second is Battleship(4 squares length)")
     x, y, is_horizontal = place_ship_on_ocean()
-    first_player.ocean.add_ship(x, y, is_horizontal, 'Battleship')
+    ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Battleship')
+    while ship is not True:
+        print("Wrong location! Try again")
+        x, y, is_horizontal = place_ship_on_ocean()
+        ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Battleship')
+    first_player.ocean.print_ocean(first_player)
+
+    print("Third is Cruiser(3 squares length)")
     x, y, is_horizontal = place_ship_on_ocean()
-    first_player.ocean.add_ship(x, y, is_horizontal, 'Cruiser')
+    ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Cruiser')
+    while ship is not True:
+        print("Wrong location! Try again")
+        x, y, is_horizontal = place_ship_on_ocean()
+        ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Cruiser')
+    first_player.ocean.print_ocean(first_player)
+
+    print("Fourth is Submarine(3 squares length)")
     x, y, is_horizontal = place_ship_on_ocean()
-    first_player.ocean.add_ship(x, y, is_horizontal, 'Submarine')
+    ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Submarine')
+    while ship is not True:
+        print("Wrong location! Try again")
+        x, y, is_horizontal = place_ship_on_ocean()
+        ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Submarine')
+    first_player.ocean.print_ocean(first_player)
+
+    print("Fifth is Destroyer(2 squares length)")
     x, y, is_horizontal = place_ship_on_ocean()
-    first_player.ocean.add_ship(x, y, is_horizontal, 'Destroyer')
-    first_player.ocean.print_ocean(first_player.name)
+    ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Destroyer')
+    while ship is not True:
+        print("Wrong location! Try again")
+        x, y, is_horizontal = place_ship_on_ocean()
+        ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Destroyer')
+
+    first_player.ocean.print_ocean(first_player)
 
 
 
