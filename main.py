@@ -100,10 +100,10 @@ def place_ship_on_ocean():
     else:
         is_horizontal = False
 
-    location = input("Enter a ship location(like E6): ")
+    location = input("Enter a ship location(like E6): ").upper()
     x, y = conver_location_to_coordinates(location)
 
-    return x, y , is_horizontal
+    return x, y, is_horizontal
 
 
 def conver_location_to_coordinates(location):
