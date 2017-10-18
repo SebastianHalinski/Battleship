@@ -204,8 +204,12 @@ def multiplayer_game(first_player, second_player):
         print_waiting_screen("waiting_for_player_1.txt")
         first_player.ocean.print_ocean(first_player.get_name())
         second_player.ocean.print_ocean(first_player.get_name())
-        location = input("Enter a your shoot location(like E6): ")
-        x, y = conver_location_to_coordinates(location)
+        while True:
+            location = input("Enter a your shoot location(like E6): ").upper()
+            list_alfa = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+            if location[0] in list_alfa and location[1:].isnumeric() and int(location[1:]) <= 10:
+                x, y = conver_location_to_coordinates(location)
+                break
         first_player.shoot(second_player, x, y)
         second_player.ocean.print_ocean(first_player.get_name())
         input()
@@ -229,8 +233,12 @@ def place_ship_on_ocean():
     else:
         is_horizontal = False
 
-    location = input("Enter a ship location(like E6): ").upper()
-    x, y = conver_location_to_coordinates(location)
+    while True:
+        location = input("Enter a ship location(like E6): ").upper()
+        list_alfa = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+        if location[0] in list_alfa and location[1:].isnumeric() and int(location[1:]) <= 10:
+            x, y = conver_location_to_coordinates(location)
+            break
 
     return x, y, is_horizontal
 
