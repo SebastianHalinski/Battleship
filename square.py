@@ -10,28 +10,20 @@ class Square():
         self.y = y
         self.status = status
 
-    def __str__(self):
-        return self.status
-
-    # def get_location(self):
-    #     pass
-    # implementacja tego i iterowanie po wszystkich
-    # elementach ocean?
-
-    def change_status_to_hit(self):
-        self.status = self.SQUARE_STATES['hit']
-
-    def change_status_to_missed(self):
-        self.status = self.SQUARE_STATES['missed']
-
-    def get_status(self):
-        return self.status
-
     def get_x(self):
         return self.x
 
     def get_y(self):
         return self.y
+
+    def __str__(self):
+        return self.status
+
+    def get_status(self):
+        return self.status
+
+    def set_status(self, new_status):
+        self.status = self.SQUARE_STATES[new_status]
 
     @classmethod
     def get_status_empty(cls):
