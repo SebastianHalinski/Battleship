@@ -46,7 +46,7 @@ class Ocean():
 
             print("\n" + "--------------------------------------------")
 
-o = Ocean("player1")
-p = Ocean("player2")
-p.print_ocean(o)
-o.print_ocean(p)
+# o = Ocean("player1")
+# p = Ocean("player2")
+# p.print_ocean(o)
+# o.print_ocean(p)

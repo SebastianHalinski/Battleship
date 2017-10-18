@@ -87,5 +87,5 @@ class ComputerPlayer(Player):
     def add_ships(self):
         pass
 
-# test = Player("abc")
-# test.print_ocean()
+test = Player("abc")
+test.ocean.print_ocean()
