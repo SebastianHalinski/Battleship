@@ -2,14 +2,9 @@ from ocean import Ocean
 from player import ComputerPlayer, Player
 from ship import Ship
 from square import Square
-<<<<<<< Updated upstream
-import os
-menu = """Enter an action:
-=======
 import sys
 import os
 
->>>>>>> Stashed changes
 
 def read_screen(file_name):
     with open(file_name) as file:
@@ -28,7 +23,7 @@ def print_waiting_screen(file_name):
         waiting_screen_2 = read_screen("waiting_for_player_2.txt")
         print(waiting_screen_2)
         input('Press enter to continue: ')
-    
+
 
 def print_starting_screen():
     os.system('clear')
@@ -77,9 +72,9 @@ def main():
     print_waiting_screen_1()
     print_starting_screen()
     user_input = ""
-    
+
     while True: #user_input != "1" and user_input != "2" and user_input != "3" and user_input != "4" and user_input != "0":
-        
+
         os.system('clear')
         menu()
 
@@ -96,15 +91,6 @@ def main():
             player = Player(player_name)
             single_name(player_name)
 
-<<<<<<< Updated upstream
-        if user_input == "3":
-            # how to play
-            pass
-        if user_input == '4':
-            # Hall of fame
-            pass
-        if user_input == "0":
-=======
         elif user_input == "3":
             print_how_to_play()
 
@@ -112,7 +98,6 @@ def main():
             print_hall_of_fame()
 
         elif user_input == "0":
->>>>>>> Stashed changes
             exit()
 
 def multiplayer_game(first_player, second_player):
@@ -217,7 +202,7 @@ def multiplayer_game(first_player, second_player):
 
     # Funkcja ktora bedzie wolac 1 playera
 
-    while 
+    while
 
     #Funkcja pokazujca plansze swoja i przeciwnika
 
@@ -294,4 +279,3 @@ if __name__ == "__main__":
 
 # test = Player("abc")
 # test.print_ocean()
-
