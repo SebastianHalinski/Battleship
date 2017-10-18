@@ -64,7 +64,7 @@ class Ocean():
         else:
             return False
 
-    def print_ocean(self):
+    def print_ocean(self, player):
         coordinates = ('  ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
         print("Player name: " + self.owner.get_name() + "\n")
         print("   ".join(coordinates))

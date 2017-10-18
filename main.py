@@ -32,8 +32,9 @@ def main():
         if user_input == "3":
             # how to play
             pass
-        if user_input = '4':
+        if user_input == '4':
             # Hall of fame
+            pass
         if user_input == "0":
             exit()
 
@@ -101,9 +102,8 @@ def place_ship_on_ocean():
 
     location = input("Enter a ship location(like E6): ")
     x, y = conver_location_to_coordinates(location)
-    print(x, y)
 
-    return x + 1, y + 1, is_horizontal
+    return x, y , is_horizontal
 
 
 def conver_location_to_coordinates(location):
