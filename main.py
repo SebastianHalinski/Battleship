@@ -2,33 +2,101 @@ from ocean import Ocean
 from player import ComputerPlayer, Player
 from ship import Ship
 from square import Square
+<<<<<<< Updated upstream
 import os
 menu = """Enter an action:
+=======
+import sys
+import os
 
-Press 1 to create game player versus player
-Press 2 to create game player versus computer
-Press 3 to quit
-"""
+>>>>>>> Stashed changes
+
+def read_screen(file_name):
+    with open(file_name) as file:
+        contents = file.read()
+    return contents
+
+
+def print_waiting_screen(file_name):
+    os.system('clear')
+    if file_name == "waiting_for_player_1.txt":
+        waiting_screen_1 = read_screen(file_name)
+        print(waiting_screen_1)
+        input('Press enter to continue: ')
+
+    elif file_name == "waiting_for_player_2.txt":
+        waiting_screen_2 = read_screen("waiting_for_player_2.txt")
+        print(waiting_screen_2)
+        input('Press enter to continue: ')
+    
+
+def print_starting_screen():
+    os.system('clear')
+    introduction_screen = read_screen('intro.txt')
+    print(introduction_screen)
+    input('Press enter to continue: ')
+
+
+def print_how_to_play():
+    os.system('clear')
+    how_to_play_screen = read_screen('how_to_play.txt')
+    print(how_to_play_screen)
+    input('Press enter to quit: ')
+
+
+def print_hall_of_fame():
+    os.system('clear')
+    contents = []
+    with open('high_scores.txt') as file:
+        for line in file:
+            sublist = line.strip().split(',')
+            contents.append(sublist)
+    print('\n\n\n\n')
+    print("HALL OF FAME:\n\n")
+    print('NAME'.rjust(10), 'SCORE'.ljust(10))
+    for sublist in contents:
+        print(sublist[0].rjust(10), end=' ')
+        print(sublist[1].ljust(10))
+    print('\n')
+    input('Press enter to quit: ')
+
+
+def menu():
+    print( """Select option:
+
+Press 1 to start multiplayer game
+Press 2 to start singleplayer game
+Press 3 to learn how to play
+Press 4 to see the Hall of Fame
+Press 0 to exit
+
+""")
 
 
 def main():
-
+    print_waiting_screen_1()
+    print_starting_screen()
     user_input = ""
-    while user_input != "1" and user_input != "2" and user_input != "3" and user_input != "4" and user_input != "0":
-        print(menu)
-        user_input = input("Enter: ")
+    
+    while True: #user_input != "1" and user_input != "2" and user_input != "3" and user_input != "4" and user_input != "0":
+        
+        os.system('clear')
+        menu()
+
+        user_input = input("Your choice: ")
         if user_input == "1":
-            first_player_name = input("Enter a name of first player: ")
-            second_player_name = input("Enter a name of second player: ")
+            first_player_name = input("Enter the name of the first player: ")
+            second_player_name = input("Enter the name of second player: ")
             first_player = Player(first_player_name)
             second_player = Player(second_player_name)
             multiplayer_game(first_player, second_player)
 
-        if user_input == "2":
-            player_name = input("Enter a name of first player: ")
+        elif user_input == "2":
+            player_name = input("Enter your name: ")
             player = Player(player_name)
             single_name(player_name)
 
+<<<<<<< Updated upstream
         if user_input == "3":
             # how to play
             pass
@@ -36,6 +104,15 @@ def main():
             # Hall of fame
             pass
         if user_input == "0":
+=======
+        elif user_input == "3":
+            print_how_to_play()
+
+        elif user_input == '4':
+            print_hall_of_fame()
+
+        elif user_input == "0":
+>>>>>>> Stashed changes
             exit()
 
 def multiplayer_game(first_player, second_player):
@@ -217,3 +294,4 @@ if __name__ == "__main__":
 
 # test = Player("abc")
 # test.print_ocean()
+
