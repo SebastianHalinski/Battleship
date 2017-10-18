@@ -12,8 +12,9 @@ Press 3 to quit
 
 
 def main():
+
     user_input = ""
-    while user_input != "1" and user_input != "2" and user_input != "3":
+    while user_input != "1" and user_input != "2" and user_input != "3" and user_input != "4" and user_input != "0":
         print(menu)
         user_input = input("Enter: ")
         if user_input == "1":
@@ -29,6 +30,11 @@ def main():
             single_name(player_name)
 
         if user_input == "3":
+            # how to play
+            pass
+        if user_input = '4':
+            # Hall of fame
+        if user_input == "0":
             exit()
 
 def multiplayer_game(first_player, second_player):

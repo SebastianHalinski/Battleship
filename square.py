@@ -44,4 +44,3 @@ class Square():
     @classmethod
     def get_status_hit(cls):
         return cls.SQUARE_STATES['hit']
-
