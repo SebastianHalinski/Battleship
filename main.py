@@ -103,7 +103,7 @@ def multiplayer_game(first_player, second_player):
     print("Place your ships on board!")
     print("First is Carrier(5 squares length)")
     x, y, is_horizontal = place_ship_on_ocean()
-    ship = first_player.ocean.add_ship(x, y, is_horizontal, 'Carrier')
+    ship = first_player.get_ocean().add_ship(x, y, is_horizontal, 'Carrier')
     while ship is not True:
         print("Wrong location! Try again")
         x, y, is_horizontal = place_ship_on_ocean()
@@ -203,11 +203,11 @@ def multiplayer_game(first_player, second_player):
     while True:
         print_waiting_screen("waiting_for_player_1.txt")
         first_player.ocean.print_ocean(first_player.get_name())
-        first_player.ocean.print_ocean(second_player.get_name())
+        second_player.ocean.print_ocean(first_player.get_name())
         location = input("Enter a your shoot location(like E6): ")
         x, y = conver_location_to_coordinates(location)
         first_player.shoot(second_player, x, y)
-        first_player.ocean.print_ocean(second_player.get_name())
+        second_player.ocean.print_ocean(first_player.get_name())
         input()
         win = first_player.is_winner(second_player)
         if win == True:
@@ -236,7 +236,7 @@ def place_ship_on_ocean():
 
 
 def conver_location_to_coordinates(location):
-    y = int(location[1]) - 1
+    y = int(location[1:]) - 1
 
     x_cords = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     for i in x_cords:
