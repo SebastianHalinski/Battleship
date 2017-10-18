@@ -40,6 +40,14 @@ class Player():
 
         return True
 
+    def get_ship_from_coordinates(self, other, x, y):
+        other_ocean = other.get_ocean()
+        other_ships = other.ocean.get_ships()
+        for ship in other_ships:
+            ship_region = ship.get_region()
+            if (x, y) in ship_region:
+                return ship
+
 
 class ComputerPlayer(Player):
 
@@ -78,7 +86,7 @@ class ComputerPlayer(Player):
 
         for i in range(x - 1, x + 2):
             for j in range(y - 1, y + 2):
-                if (i, j) != (x, y) and i in range(Ocean.width) and j in range(Ocean.height): 
+                if (i, j) != (x, y) and i in range(Ocean.width) and j in range(Ocean.height):
                     surroundings.add((x, y))
 
         return surroundings
@@ -104,8 +112,9 @@ class ComputerPlayer(Player):
         other_ships = other.get_ships()
         for ship in other_ships:
             ship_region = ship.get_region()
-            if (x, y) in ship_region:
-                return ship
+            for coordinates in ship_region:
+                if (x, y) == coordinates:
+                    return ship
 
     def mark_ship_territory_as_do_not_shoot(self):
         #self.unsunk_hits.sort()

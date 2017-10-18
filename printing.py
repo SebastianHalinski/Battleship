@@ -8,7 +8,7 @@ def read_screen(file_name):
 
 
 def print_waiting_screen(file_name):
-    os.system('clear')
+    #os.system('clear')
     if file_name == "waiting_for_player_1.txt":
         waiting_screen_1 = read_screen(file_name)
         print(waiting_screen_1)
@@ -49,3 +49,17 @@ def print_hall_of_fame():
         print(sublist[1].ljust(10))
     print('\n')
     input('Press enter to quit: ')
+
+
+
+def print_win_screen():
+    #os.system('clear')
+    win_screen = read_screen('you_win.txt')
+    print(win_screen)
+    input('Press enter to continue: ')
+
+def print_lose_screen():
+    #os.system('clear')
+    lose_screen = read_screen('you_lose.txt')
+    print(lose_screen)
+    input('Press enter to continue: ')

@@ -30,11 +30,7 @@ def main():
 
         user_input = input("Your choice: ")
         if user_input == "1":
-            first_player_name = input("Enter the name of the first player: ")
-            second_player_name = input("Enter the name of second player: ")
-            first_player = Player(first_player_name)
-            second_player = Player(second_player_name)
-            multiplayer_game(first_player, second_player)
+            multiplayer_game()
 
         elif user_input == "2":
             player_name = input("Enter your name: ")
@@ -64,6 +60,7 @@ def add_ships(player):
             x, y, is_horizontal = get_ship_details()
             result = ocean.add_ship(x, y, is_horizontal, ship_type)
         ocean.print_ocean(player.get_name())
+        break
 
 
 def get_correct_locations():
@@ -76,12 +73,21 @@ def get_correct_locations():
     return correct_locations
 
 
-def multiplayer_game(first_player, second_player):
+def multiplayer_game():
 
+    print("First player")
+    first_player_name = input("Enter the name of the first player: ")
+    first_player = Player(first_player_name)
+    first_player.ocean.print_ocean(first_player.get_name())
     add_ships(first_player)
-    os.system("clear")
+    input("Press any button to continue")
+    #os.system("clear")
     print("Second player")
+    second_player_name = input("Enter the name of second player: ")
+    second_player = Player(second_player_name)
+    second_player.ocean.print_ocean(second_player.get_name())
     add_ships(second_player)
+    input("Press any button to continue")
 
     while True:
         print_waiting_screen("waiting_for_player_1.txt")
@@ -94,16 +100,17 @@ def multiplayer_game(first_player, second_player):
                 x, y = convert_location_to_coordinates(location)
                 break
         first_player.shoot(second_player, x, y)
+        ship = first_player.get_ship_from_coordinates(second_player, x, y)
+        if ship.is_sunk(second_player.get_ocean().get_board()):
+            print("Ship is sunk")
         second_player.ocean.print_ocean(first_player.get_name())
-        input()
+        input("Press any button to continue")
         win = first_player.is_winner(second_player)
         if win == True:
-            exit()
-        first_player, second_player = second_player, first_player
-    
-    #Funkcja pokazujca plansze swoja i przeciwnika
+            print_win_screen()
+            main()
 
-    #Funkcja strzal
+        first_player, second_player = second_player, first_player
 
 
 def convert_location_to_coordinates(location):
@@ -136,6 +143,7 @@ def get_ship_details():
             break
 
     return x, y, is_horizontal
+
 
 
 if __name__ == "__main__":

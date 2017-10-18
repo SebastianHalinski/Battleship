@@ -47,4 +47,5 @@ class Ship():
             square = board[y][x]
             if square.get_status() == Square.get_status_ship():
                 return False
+                
         return True
