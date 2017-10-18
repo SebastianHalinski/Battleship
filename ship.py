@@ -25,7 +25,7 @@ class Ship():
 
         else:
             for i in range(self.length):
-                ship_territory.add((self.x, self.y))
+                ship_territory.add((self.x, self.y + i))
 
         return ship_territory
 
