@@ -157,7 +157,7 @@ def human_turn(player, enemy):
 
 def computer_turn(computer_player, enemy):
     enemy_ocean = enemy.get_ocean()
-    x, y = computer_player.choose_random_shot()
+    x, y = computer_player.choose_shot()
     computer_player.shoot(enemy, x, y)
     possible_ship = computer_player.get_ship_from_coordinates(enemy, x, y)
     if possible_ship:
@@ -215,6 +215,11 @@ def main():
 
     """
 
+    difficult_level = """Choose difficult level:
+    ==> press E to easy
+    ==> press M to medium
+    ==> press H to hard"""
+
     print_screen('intro.txt')
 
     while True:
@@ -225,7 +230,11 @@ def main():
             multiplayer_game()
 
         elif user_input == "2":
-            single_game('hard')
+            level = input(difficult_level)
+            correct_levels = ("E", "e", "M", "m", "H", "h")
+            while level not in correct_levels:
+                level = input(difficult_level)
+            single_game(level)
 
         elif user_input == "3":
             print_screen('how_to_play.txt')
