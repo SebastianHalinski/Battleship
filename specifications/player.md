@@ -14,14 +14,14 @@ the class Player is a blueprint for creating players.
 
 * is_winner(other): returns True if player has won, else False
 
-* shoot(other, x, y): tries to shoot enemy ships, if the location was shot before returns None else return True
+* shoot(other, x, y): tries to shoot enemy ships, if the location has been shot before returns None, else returns True
 
-* get_ship_from_coordinates(other, x, y): returns an object of ship if location is part of a ship else None
+* get_ship_from_coordinates(other, x, y): returns an object of ship if location is part of a ship, else None
 
 
 Class ComputerPlayer(Player)
 
-This class is a subclass inherits from class Player.
+This class is a subclass inheriting from class Player.
 
 ## METHODS:
 
@@ -29,15 +29,15 @@ This class is a subclass inherits from class Player.
 
 * @staticmethod: get_surroundings(x, y): returns a set containing the coordinates of surroundings of the location
 
-* @staticmethod: get horizontal neighbours(x, y): returns location of horizontal neighbours of location in form of set of tuple
+* @staticmethod: get horizontal neighbours(x, y): returns the scope of horizontally adjacent  squares in the form of a set or tuple
 
-* @staticmethod: get vertical neighbours(x, y): returns location of vertical neighbours of location in form of set of tuple
+* @staticmethod: get vertical neighbours(x, y): returns the scope of vertically adjacent squares in the form of a set of tuple
 
 * choose_random_shot(): returns random location on board which was not hit before 
 
-* get_is_horizontal(): return True if ship is horizontal else False
+* get_is_horizontal(): returns True if ship is horizontal, else False
 
-* choose_shot(): returns the location of next computer shot which depends of difficulty level
+* choose_shot(): returns the location of next computer shot which depends on difficulty level
 
 * mark_ship_region_as_do_not_shot(ship): moves locations of region of ship to list do_not_shoot and clears unsign hits list
 

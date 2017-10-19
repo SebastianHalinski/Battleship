@@ -3,7 +3,7 @@ __square.py__
 
 Class Square 
 
-The Square class represents one single location (square) of the board.
+The Square class represents one single block of the board.
 
 ## ATTRIBUTE:
 
@@ -14,7 +14,7 @@ The Square class represents one single location (square) of the board.
 
 * __init__(x,  y,  status): constructor of square
 
-* __str__(): returns status as a str
+* __str__(): returns status as a string
 
 * get_x(): getter of x instance attribute 
 

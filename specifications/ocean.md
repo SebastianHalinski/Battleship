@@ -11,9 +11,9 @@ They refer to the size of boards.
 
 ### METHODS:
 
-* __init__(owner): constructor of ocean
+* __init__(owner): the constructor of an ocean
 
-* get_ships(): getter of instance attribute ships
+* get_ships(): getter of instance attribute ship
 
 * get_board(): getter of instance attribute board
 
