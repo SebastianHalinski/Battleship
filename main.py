@@ -86,7 +86,6 @@ def human_add_ships(player):
             result = ocean.add_ship(x, y, is_horizontal, ship_type)
 
         ocean.print_ocean(player.get_name())
-        break
 
 
 def choose_random_location():
@@ -155,6 +154,7 @@ def human_turn(player, enemy):
 
     return player.is_winner(enemy)
 
+
 def computer_turn(computer_player, enemy):
     enemy_ocean = enemy.get_ocean()
     x, y = computer_player.choose_shot()
@@ -215,10 +215,11 @@ def main():
 
     """
 
-    difficult_level = """Choose difficult level:
+    difficulty_menu = """Choose difficulty level:
     ==> press E to easy
     ==> press M to medium
-    ==> press H to hard"""
+    ==> press H to hard
+    """
 
     print_screen('intro.txt')
 
@@ -230,11 +231,11 @@ def main():
             multiplayer_game()
 
         elif user_input == "2":
-            level = input(difficult_level)
-            correct_levels = ("E", "e", "M", "m", "H", "h")
-            while level not in correct_levels:
-                level = input(difficult_level)
-            single_game(level)
+            difficulty_level = input(difficulty_menu).upper()
+            correct_levels = ("E", "M", "H")
+            while difficulty_level not in correct_levels:
+                difficulty_level = input(difficulty_menu).upper()
+            single_game(difficulty_level)
 
         elif user_input == "3":
             print_screen('how_to_play.txt')

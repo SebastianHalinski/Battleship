@@ -70,7 +70,7 @@ class ComputerPlayer(Player):
         for i in range(x - 1, x + 2):
             for j in range(y - 1, y + 2):
                 if (i, j) != (x, y) and i in range(Ocean.width) and j in range(Ocean.height):
-                    surroundings.add((x, y))
+                    surroundings.add((i, j))
 
         return surroundings
 
@@ -79,16 +79,20 @@ class ComputerPlayer(Player):
         neighbours = set()
 
         for i in (x - 1, x + 1):
-            neighobours.add((i, y))
+            if i in range(Ocean.width):
+                neighbours.add((i, y))
+
+        return neighbours
 
     @staticmethod
     def get_vertical_neighbours(x, y):
         neighbours = set()
 
         for j in (y - 1, y + 1):
-            neighbours.add(x, j)
+            if j in range(Ocean.width):
+                neighbours.add((x, j))
 
-        return neigbours
+        return neighbours
 
     def choose_random_shot(self):
         x = random.randrange(Ocean.width)
@@ -106,53 +110,65 @@ class ComputerPlayer(Player):
 
         x_values = []
         y_values = []
-        for hit in unsunk_hits:
+        for hit in self.unsunk_hits:
             x = hit[x_index]
             y = hit[y_index]
             x_values.append(x)
             y_values.append(y)
 
-        if len(set(x_values)) == 1:
+        if len(set(y_values)) == 1:
             return True
         else:
             return False
 
     def choose_shot(self):
-        if self.difficulty_level == 'easy':
+        if self.difficulty_level == 'E':
             shot = self.choose_random_shot()
+            return shot
 
-        elif self.difficulty_level == 'medium':
+        elif self.difficulty_level == 'M':
             if self.unsunk_hits:
                 for hit in self.unsunk_hits:
                     surroundings = ComputerPlayer.get_surroundings(*hit)
                     for shot in surroundings:
                         if shot not in self.do_not_shoot:
-                            break
+                            return shot
             else:
                 shot = self.choose_random_shot()
+                return shot
 
-        elif self.difficulty_level == 'hard':
+        elif self.difficulty_level == 'H':
             if self.unsunk_hits:
-                if len(unsunk_hits) > 1:
-                    is_horizontal = get_is_horizontal()
+                if len(self.unsunk_hits) > 1:
+                    for hit in self.unsunk_hits:
+                        is_horizontal = self.get_is_horizontal()
+                        if is_horizontal:
+                            neighbours = ComputerPlayer.get_horizontal_neighbours(*hit)
+                            for shot in neighbours:
+                                if shot not in self.do_not_shoot:
+                                    return shot
+                        else:
+                            neighbours = ComputerPlayer.get_vertical_neighbours(*hit)
+                            for shot in neighbours:
+                                if shot not in self.do_not_shoot:
+                                    return shot
+
                 else:
                     for hit in self.unsunk_hits:
                         neighbours = ComputerPlayer.get_horizontal_neighbours(*hit)
-                        neighbours.update(CompueterPlayer.get_vertical_neighbours(*hit))
+                        neighbours.update(ComputerPlayer.get_vertical_neighbours(*hit))
                         for shot in neighbours:
                             if shot not in self.do_not_shoot:
-                                break
+                                return shot
             else:
                 shot = self.choose_random_shot()
-
-        return shot
+                return shot
 
     def mark_ship_region_as_do_not_shoot(self, ship):
         self.do_not_shoot.extend(ship.get_region())
         self.unsunk_hits.clear()
 
     def shoot(self, other, x, y):
-
         other_ocean = other.get_ocean()
         other_board = other_ocean.get_board()
         square = other_board[y][x]
@@ -163,7 +179,7 @@ class ComputerPlayer(Player):
             square.set_status('hit')
 
             ship = self.get_ship_from_coordinates(other, x, y)
-            if ship.is_sunk(other_board) and self.level != easy:
+            if ship.is_sunk(other_board) and self.difficulty_level != 'E':
                 self.mark_ship_region_as_do_not_shoot(ship)
             else:
                 self.unsunk_hits.append((x, y))
