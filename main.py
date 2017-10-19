@@ -1,7 +1,6 @@
 import csv
 import os
 import random
-import sys
 
 import texttable as tt
 from high_scores import *
