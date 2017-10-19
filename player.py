@@ -166,6 +166,6 @@ class ComputerPlayer(Player):
             if ship.is_sunk(other_board) and self.level != easy:
                 self.mark_ship_region_as_do_not_shoot(ship)
             else:
-                self.unsunk_hits.append(x, y)
+                self.unsunk_hits.append((x, y))
 
         self.do_not_shoot.append((x, y))
