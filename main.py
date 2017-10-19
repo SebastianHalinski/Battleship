@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 
 from ocean import Ocean
 from player import ComputerPlayer, Player
@@ -78,7 +79,7 @@ def get_location():
     return location
 
 
-def add_ships(player):
+def human_add_ships(player):
     ocean = player.get_ocean()
     print("Place your ships on board!")
     for ship_type in Ship.SHIP_TYPE_TO_LENGTH:
@@ -100,6 +101,28 @@ def add_ships(player):
         break
 
 
+def choose_random_location():
+    x = random.randrange(Ocean.width)
+    y = random.randrange(Ocean.height)
+
+    return x, y
+
+
+def computer_add_ships(computer):
+    ocean = computer.get_ocean()
+    x, y = computer.choose_random_location()
+    for ship_type in Ship.SHIP_TYPE_TO_LENGTH:
+        ship_length = Ship.SHIP_TYPE_TO_LENGTH[ship_type]
+        x, y = computer.choose_random_location()
+        is_horizontal = random.choice([True, False])
+
+        result = ocean.add_ship(x, y, is_horizontal, ship_type)
+        while not result:
+            x, y = choose_random_location()
+            is_horizontal = random.choice([True, False])
+            result = ocean.add_ship(x, y, is_horizontal, ship_type)
+
+
 def set_up_player():
     player_name = None
     while not player_name:
@@ -107,7 +130,7 @@ def set_up_player():
     player = Player(player_name)
     ocean = player.get_ocean()
     ocean.print_ocean(player_name)
-    add_ships(player)
+    human_add_ships(player)
     press_enter_to_continue()
     os.system("clear")
 
@@ -186,5 +209,14 @@ def main():
             print('\nWrong input!\n')
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
+
+
+player = Player('Asia')
+computer = ComputerPlayer('easy')
+computer_add_ships(computer)
+computer.get_ocean().print_ocean('Computer')
+
+shot = computer.choose_shot()
+computer.shoot(player, *shot)
