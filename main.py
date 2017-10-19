@@ -6,6 +6,9 @@ from ocean import Ocean
 from player import ComputerPlayer, Player
 from ship import Ship
 from square import Square
+import texttable as tt
+import csv
+from high_scores import *
 
 
 def press_enter_to_continue():
@@ -175,6 +178,10 @@ def single_game(difficulty_level):
     while True:
         human_turn(human_player, computer_player)
         if human_player.is_winner(computer_player):
+            score = player_score(12999, 12, difficulty_level, human_player.get_name())
+            high_scores_data = import_hall_of_fame('high_scores.csv', score)
+            print(get_highscore_table(high_scores_data, score, 'high_scores.csv'))
+            input()
             print_screen('you_win.txt')
             break
         computer_turn(computer_player, human_player)
