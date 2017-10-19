@@ -1,3 +1,15 @@
+import csv
+import os
+import sys
+import random
+
+from ocean import Ocean
+from player import ComputerPlayer, Player
+from ship import Ship
+from square import Square
+
+
+
 def player_score(score, all_shots, level, name):
     high_score_line = []
     high_score_line.append(score)
@@ -7,17 +19,7 @@ def player_score(score, all_shots, level, name):
     return high_score_line
 
 
-def export_hall_of_fame(text_file, high_scores_data):
-    import csv
-
-    with open(text_file, 'w') as csvfile:
-        writer = csv.writer(csvfile)
-        for row in high_scores_data:
-            writer.writerow(row)
-
-
 def import_hall_of_fame(text_file, player_score):
-    import csv
     high_scores_data = []
     with open(text_file, 'r') as csvfile:
         reader = csv.reader(csvfile)
@@ -27,17 +29,17 @@ def import_hall_of_fame(text_file, player_score):
     high_scores_data = sorted(high_scores_data, key = lambda score: score[0], reverse = True)
 
     for row in high_scores_data:
-        if int(row[0]) <= player_score[0]:
+        if row[0] <= player_score[0]:
             del high_scores_data[-1]
-
             high_scores_data.append(player_score)
             break
+
     high_scores_data = sorted(high_scores_data, key = lambda score: score[0], reverse = True)
 
     return high_scores_data
 
 
-def get_highscore_table():
+def get_highscore_table(high_scores_data, player_score, text_file):
     name_data = []
     level_data = []
     all_shots_data = []
@@ -45,7 +47,8 @@ def get_highscore_table():
     index_data = []
     index = 1
 
-    high_scores_data = import_hall_of_fame("high_scores.csv", player_score)
+    high_scores_data = import_hall_of_fame(text_file, player_score)
+
 
     for i in high_scores_data:
         index_data.append(str(index))
@@ -67,10 +70,14 @@ def get_highscore_table():
 
     return str(table)
 
+def export_hall_of_fame(text_file, high_scores_data):
+    with open(text_file, 'w') as csvfile:
+        writer = csv.writer(csvfile)
+        for row in high_scores_data:
+            writer.writerow(row)
 
-# high_score_line = player_score(2379, 42, 'medium', 'plajer')
-# player_score = player_score(8999, 12, 'hard', 'plejer')
-# print(import_hall_of_fame('high_scores.csv', player_score))
+# player_score = player_score(12999, 12, 'hard', 'plejer')
+# print(player_score)
 # high_scores_data = import_hall_of_fame('high_scores.csv', player_score)
-# print(get_highscore_table())
+# print(get_highscore_table(high_scores_data, player_score, 'high_scores.csv'))
 # export_hall_of_fame('high_scores.csv', high_scores_data)
