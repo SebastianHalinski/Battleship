@@ -137,19 +137,17 @@ def multiplayer_game():
         shot_location = get_location()
         x, y = convert_location_to_coordinates(shot_location)
         result = player.shoot(enemy, x, y)
-        # while not result:
-        #     print("You've already tried this place! Try again!")
-        #     result = player.shoot(enemy, x, y)
+        while not result:
+            print('You tried to hit this place before. Try again!')
+            shot_location = get_location()
+            x, y = convert_location_to_coordinates(shot_location)
+            result = player.shoot(enemy, x, y)
 
         possible_ship = player.get_ship_from_coordinates(enemy, x, y)
         if possible_ship:
             ship = possible_ship
             if ship.is_sunk(enemy_ocean.get_board()):
                 print("{} is sunk!".format(ship.ship_type))
-            else:
-                print("Ship is hit!")
-        else:
-            print("You missed!")
 
         enemy_ocean.print_ocean(player_name)
         press_enter_to_continue()

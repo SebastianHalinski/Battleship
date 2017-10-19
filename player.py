@@ -28,20 +28,17 @@ class Player():
         return True
 
     def shoot(self, other, x, y):
-        ''' Returns True if hit square was not hit before, else False'''
 
         ocean = other.get_ocean()
         square = ocean.board[y][x]
         if square.get_status() == Square.SQUARE_STATES['empty']:
+            print('You missed!!!')
             square.set_status('missed')
+            return True
         elif square.get_status() == Square.SQUARE_STATES['ship']:
+            print('Hit!!!')
             square.set_status('hit')
-        elif square.get_status == Square.SQUARE_STATES['hit']:
-            return False
-        elif square.get_status == Square.SQUARE_STATES['missed']:
-            return False
-
-        return True
+            return True
 
     def get_ship_from_coordinates(self, other, x, y):
         ''' If square at location x, y on enemy's board is a part of a ship it returns that ship.
