@@ -1,22 +1,11 @@
 import os
 import sys
+import random
 
 from ocean import Ocean
 from player import ComputerPlayer, Player
 from ship import Ship
 from square import Square
-
-
-def menu():
-    print( """Select option:
-
-Press 1 to start multiplayer game
-Press 2 to start singleplayer game
-Press 3 to learn how to play
-Press 4 to see the Hall of Fame
-Press 0 to exit
-
-""")
 
 
 def press_enter_to_continue():
@@ -78,7 +67,7 @@ def get_location():
     return location
 
 
-def add_ships(player):
+def human_add_ships(player):
     ocean = player.get_ocean()
     print("Place your ships on board!")
     for ship_type in Ship.SHIP_TYPE_TO_LENGTH:
@@ -100,6 +89,27 @@ def add_ships(player):
         break
 
 
+def choose_random_location():
+    x = random.randrange(Ocean.width)
+    y = random.randrange(Ocean.height)
+
+    return x, y
+
+
+def computer_add_ships(computer):
+    ocean = computer.get_ocean()
+    for ship_type in Ship.SHIP_TYPE_TO_LENGTH:
+        ship_length = Ship.SHIP_TYPE_TO_LENGTH[ship_type]
+        x, y = choose_random_location()
+        is_horizontal = random.choice([True, False])
+
+        result = ocean.add_ship(x, y, is_horizontal, ship_type)
+        while not result:
+            x, y = choose_random_location()
+            is_horizontal = random.choice([True, False])
+            result = ocean.add_ship(x, y, is_horizontal, ship_type)
+
+
 def set_up_player():
     player_name = None
     while not player_name:
@@ -107,11 +117,70 @@ def set_up_player():
     player = Player(player_name)
     ocean = player.get_ocean()
     ocean.print_ocean(player_name)
-    add_ships(player)
+    human_add_ships(player)
     press_enter_to_continue()
     os.system("clear")
 
     return player
+
+
+def human_turn(player, enemy):
+
+    player_ocean = player.get_ocean()
+    enemy_ocean = enemy.get_ocean()
+    player_name = player.get_name()
+    enemy_name = enemy.get_name()
+
+    player_ocean.print_ocean(player_name)
+    enemy_ocean.print_ocean(player_name)
+
+    shot_location = get_location()
+    x, y = convert_location_to_coordinates(shot_location)
+    result = player.shoot(enemy, x, y)
+
+    while not result:
+        print('You tried to hit this place before. Try again!')
+        shot_location = get_location()
+        x, y = convert_location_to_coordinates(shot_location)
+        result = player.shoot(enemy, x, y)
+
+    possible_ship = player.get_ship_from_coordinates(enemy, x, y)
+    if possible_ship:
+        ship = possible_ship
+        if ship.is_sunk(enemy_ocean.get_board()):
+            print("{} is sunk!".format(ship.ship_type))
+
+    enemy_ocean.print_ocean(player_name)
+    press_enter_to_continue()
+
+    return player.is_winner(enemy)
+
+def computer_turn(computer_player, enemy):
+    enemy_ocean = enemy.get_ocean()
+    x, y = computer_player.choose_shot()
+    computer_player.shoot(enemy, x, y)
+    possible_ship = computer_player.get_ship_from_coordinates(enemy, x, y)
+    if possible_ship:
+        ship = possible_ship
+        if ship.is_sunk(enemy_ocean.get_board()):
+            print("{} is sunk!".format(ship.ship_type))
+
+
+def single_game(difficulty_level):
+    human_player = set_up_player()
+    computer_player = ComputerPlayer(difficulty_level)
+    computer_ocean = computer_player.get_ocean()
+    computer_add_ships(computer_player)
+
+    while True:
+        human_turn(human_player, computer_player)
+        if human_player.is_winner(computer_player):
+            print_screen('you_win.txt')
+            break
+        computer_turn(computer_player, human_player)
+        if computer_player.is_winner(human_player):
+            print_screen('you_lose.txt')
+            break
 
 
 def multiplayer_game():
@@ -125,53 +194,47 @@ def multiplayer_game():
     player, enemy = player_1, player_2
 
     while True:
-        player_ocean = player.get_ocean()
-        enemy_ocean = enemy.get_ocean()
-        player_name = player.get_name()
-        enemy_name = enemy.get_name()
-
         print_screen(waiting_screen)
-        player_ocean.print_ocean(player_name)
-        enemy_ocean.print_ocean(player_name)
-
-        shot_location = get_location()
-        x, y = convert_location_to_coordinates(shot_location)
-        result = player.shoot(enemy, x, y)
-        while not result:
-            print('You tried to hit this place before. Try again!')
-            shot_location = get_location()
-            x, y = convert_location_to_coordinates(shot_location)
-            result = player.shoot(enemy, x, y)
-
-        possible_ship = player.get_ship_from_coordinates(enemy, x, y)
-        if possible_ship:
-            ship = possible_ship
-            if ship.is_sunk(enemy_ocean.get_board()):
-                print("{} is sunk!".format(ship.ship_type))
-
-        enemy_ocean.print_ocean(player_name)
-        press_enter_to_continue()
-
-        if player.is_winner(enemy):
+        is_winner = human_turn(player, enemy, waiting_screen)
+        if is_winner:
             print_screen('you_win.txt')
-            main()
-
+            break
         player, enemy = enemy, player
-        waiting_screen = waiting_screen_2
+        waiting_screen, waiting_screen_2 = waiting_screen_2, waiting_screen
 
 
 def main():
+
+    menu = """Select option:
+
+    Press 1 to start multiplayer game
+    Press 2 to start singleplayer game
+    Press 3 to learn how to play
+    Press 4 to see the Hall of Fame
+    Press 0 to exit
+
+    """
+
+    difficult_level = """Choose difficult level:
+    ==> press E to easy
+    ==> press M to medium
+    ==> press H to hard"""
+
     print_screen('intro.txt')
 
     while True:
-        menu()
+        print(menu)
         user_input = input("Your choice: ")
 
         if user_input == "1":
             multiplayer_game()
 
         elif user_input == "2":
-            single_game()
+            level = input(difficult_level)
+            correct_levels = ("E", "e", "M", "m", "H", "h")
+            while level not in correct_levels:
+                level = input(difficult_level)
+            single_game(level)
 
         elif user_input == "3":
             print_screen('how_to_play.txt')
