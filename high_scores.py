@@ -1,13 +1,5 @@
 import csv
-import os
-import sys
-import random
-
-from ocean import Ocean
-from player import ComputerPlayer, Player
-from ship import Ship
-from square import Square
-
+import texttable as tt
 
 
 def player_score(score, all_shots, level, name):
@@ -49,7 +41,6 @@ def get_highscore_table(high_scores_data, player_score, text_file):
 
     high_scores_data = import_hall_of_fame(text_file, player_score)
 
-
     for i in high_scores_data:
         index_data.append(str(index))
         name_data.append(i[3])
@@ -58,7 +49,6 @@ def get_highscore_table(high_scores_data, player_score, text_file):
         score_data.append(str(i[0]))
         index += 1
 
-    import texttable as tt
     tab = tt.Texttable()
     headings = ['Idx', 'Score', 'all shots', 'level', 'Name']
     tab.header(headings)
@@ -70,14 +60,9 @@ def get_highscore_table(high_scores_data, player_score, text_file):
 
     return str(table)
 
+
 def export_hall_of_fame(text_file, high_scores_data):
     with open(text_file, 'w') as csvfile:
         writer = csv.writer(csvfile)
         for row in high_scores_data:
             writer.writerow(row)
-
-# player_score = player_score(12999, 12, 'hard', 'plejer')
-# print(player_score)
-# high_scores_data = import_hall_of_fame('high_scores.csv', player_score)
-# print(get_highscore_table(high_scores_data, player_score, 'high_scores.csv'))
-# export_hall_of_fame('high_scores.csv', high_scores_data)

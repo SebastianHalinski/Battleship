@@ -34,11 +34,11 @@ class Player():
         ocean = other.get_ocean()
         square = ocean.board[y][x]
         if square.get_status() == Square.SQUARE_STATES['empty']:
-            print('You missed!!!')
+            print('\n' + 'You missed!!!' + '\n\n')
             square.set_status('missed')
             return True
         elif square.get_status() == Square.SQUARE_STATES['ship']:
-            print('Hit!!!')
+            print('\n' + 'Hit!!!' + '\n\n')
             square.set_status('hit')
             return True
 

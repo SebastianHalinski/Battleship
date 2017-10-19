@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+from high_scores import *
 
 from ocean import Ocean
 from player import ComputerPlayer, Player
@@ -20,7 +21,7 @@ def high_score(level, shots):
         level_multiplier = 200
     elif level == 'HARD':
         level_multiplier = 400
-    score = level_multiplier * all_ships_lenght / total_shots
+    score = int(level_multiplier * all_ships_lenght / total_shots)
     return score
 
 
@@ -151,6 +152,7 @@ def human_turn(player, enemy):
     player_name = player.get_name()
     enemy_name = enemy.get_name()
 
+    print("{}, your turn!".format(player_name))
     player_ocean.print_ocean(player_name)
     enemy_ocean.print_ocean(player_name)
 
@@ -224,7 +226,7 @@ def multiplayer_game():
 
     while True:
         print_screen(waiting_screen)
-        is_winner = human_turn(player, enemy, waiting_screen)
+        is_winner = human_turn(player, enemy)
         if is_winner:
             print_screen('you_win.txt')
             break
