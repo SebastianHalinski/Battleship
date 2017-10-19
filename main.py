@@ -1,15 +1,14 @@
+import csv
 import os
-import sys
 import random
-from high_scores import *
+import sys
 
+import texttable as tt
+from high_scores import *
 from ocean import Ocean
 from player import ComputerPlayer, Player
 from ship import Ship
 from square import Square
-import texttable as tt
-import csv
-from high_scores import *
 
 
 def high_score(level, shots):
