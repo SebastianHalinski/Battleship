@@ -8,18 +8,6 @@ from ship import Ship
 from square import Square
 
 
-def menu():
-    print( """Select option:
-
-Press 1 to start multiplayer game
-Press 2 to start singleplayer game
-Press 3 to learn how to play
-Press 4 to see the Hall of Fame
-Press 0 to exit
-
-""")
-
-
 def press_enter_to_continue():
     input('Press enter to continue: ')
 
@@ -136,7 +124,7 @@ def set_up_player():
     return player
 
 
-def human_turn(player, enemy, waiting_screen):
+def human_turn(player, enemy):
 
     player_ocean = player.get_ocean()
     enemy_ocean = enemy.get_ocean()
@@ -167,6 +155,33 @@ def human_turn(player, enemy, waiting_screen):
 
     return player.is_winner(enemy)
 
+def computer_turn(computer_player, enemy):
+    enemy_ocean = enemy.get_ocean()
+    x, y = computer_player.choose_random_shot()
+    computer_player.shoot(enemy, x, y)
+    possible_ship = computer_player.get_ship_from_coordinates(enemy, x, y)
+    if possible_ship:
+        ship = possible_ship
+        if ship.is_sunk(enemy_ocean.get_board()):
+            print("{} is sunk!".format(ship.ship_type))
+
+
+def single_game(difficulty_level):
+    human_player = set_up_player()
+    computer_player = ComputerPlayer(difficulty_level)
+    computer_ocean = computer_player.get_ocean()
+    computer_add_ships(computer_player)
+
+    while True:
+        human_turn(human_player, computer_player)
+        if human_player.is_winner(computer_player):
+            print_screen('you_win.txt')
+            break
+        computer_turn(computer_player, human_player)
+        if computer_player.is_winner(human_player):
+            print_screen('you_lose.txt')
+            break
+
 
 def multiplayer_game():
     waiting_screen = "waiting_for_player_1.txt"
@@ -189,17 +204,28 @@ def multiplayer_game():
 
 
 def main():
+
+    menu = """Select option:
+
+    Press 1 to start multiplayer game
+    Press 2 to start singleplayer game
+    Press 3 to learn how to play
+    Press 4 to see the Hall of Fame
+    Press 0 to exit
+
+    """
+
     print_screen('intro.txt')
 
     while True:
-        menu()
+        print(menu)
         user_input = input("Your choice: ")
 
         if user_input == "1":
             multiplayer_game()
 
         elif user_input == "2":
-            single_game()
+            single_game('hard')
 
         elif user_input == "3":
             print_screen('how_to_play.txt')
