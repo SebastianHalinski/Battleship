@@ -1,7 +1,7 @@
 class Square():
 
     SQUARE_STATES = {'empty': ' ',
-                     'ship': '@',
+                     'ship': '#',
                      'hit': 'X',
                      'missed': 'O'}
 
