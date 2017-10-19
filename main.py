@@ -110,10 +110,9 @@ def choose_random_location():
 
 def computer_add_ships(computer):
     ocean = computer.get_ocean()
-    x, y = computer.choose_random_location()
     for ship_type in Ship.SHIP_TYPE_TO_LENGTH:
         ship_length = Ship.SHIP_TYPE_TO_LENGTH[ship_type]
-        x, y = computer.choose_random_location()
+        x, y = choose_random_location()
         is_horizontal = random.choice([True, False])
 
         result = ocean.add_ship(x, y, is_horizontal, ship_type)
@@ -137,6 +136,38 @@ def set_up_player():
     return player
 
 
+def human_turn(player, enemy, waiting_screen):
+
+    player_ocean = player.get_ocean()
+    enemy_ocean = enemy.get_ocean()
+    player_name = player.get_name()
+    enemy_name = enemy.get_name()
+
+    player_ocean.print_ocean(player_name)
+    enemy_ocean.print_ocean(player_name)
+
+    shot_location = get_location()
+    x, y = convert_location_to_coordinates(shot_location)
+    result = player.shoot(enemy, x, y)
+
+    while not result:
+        print('You tried to hit this place before. Try again!')
+        shot_location = get_location()
+        x, y = convert_location_to_coordinates(shot_location)
+        result = player.shoot(enemy, x, y)
+
+    possible_ship = player.get_ship_from_coordinates(enemy, x, y)
+    if possible_ship:
+        ship = possible_ship
+        if ship.is_sunk(enemy_ocean.get_board()):
+            print("{} is sunk!".format(ship.ship_type))
+
+    enemy_ocean.print_ocean(player_name)
+    press_enter_to_continue()
+
+    return player.is_winner(enemy)
+
+
 def multiplayer_game():
     waiting_screen = "waiting_for_player_1.txt"
     waiting_screen_2 = "waiting_for_player_2.txt"
@@ -148,39 +179,13 @@ def multiplayer_game():
     player, enemy = player_1, player_2
 
     while True:
-        player_ocean = player.get_ocean()
-        enemy_ocean = enemy.get_ocean()
-        player_name = player.get_name()
-        enemy_name = enemy.get_name()
-
         print_screen(waiting_screen)
-        player_ocean.print_ocean(player_name)
-        enemy_ocean.print_ocean(player_name)
-
-        shot_location = get_location()
-        x, y = convert_location_to_coordinates(shot_location)
-        result = player.shoot(enemy, x, y)
-        while not result:
-            print('You tried to hit this place before. Try again!')
-            shot_location = get_location()
-            x, y = convert_location_to_coordinates(shot_location)
-            result = player.shoot(enemy, x, y)
-
-        possible_ship = player.get_ship_from_coordinates(enemy, x, y)
-        if possible_ship:
-            ship = possible_ship
-            if ship.is_sunk(enemy_ocean.get_board()):
-                print("{} is sunk!".format(ship.ship_type))
-
-        enemy_ocean.print_ocean(player_name)
-        press_enter_to_continue()
-
-        if player.is_winner(enemy):
+        is_winner = human_turn(player, enemy, waiting_screen)
+        if is_winner:
             print_screen('you_win.txt')
-            main()
-
+            break
         player, enemy = enemy, player
-        waiting_screen = waiting_screen_2
+        waiting_screen, waiting_screen_2 = waiting_screen_2, waiting_screen
 
 
 def main():
@@ -209,14 +214,5 @@ def main():
             print('\nWrong input!\n')
 
 
-# if __name__ == "__main__":
-#     main()
-
-
-player = Player('Asia')
-computer = ComputerPlayer('easy')
-computer_add_ships(computer)
-computer.get_ocean().print_ocean('Computer')
-
-shot = computer.choose_shot()
-computer.shoot(player, *shot)
+if __name__ == "__main__":
+    main()
