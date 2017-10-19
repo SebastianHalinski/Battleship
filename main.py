@@ -11,6 +11,24 @@ import csv
 from high_scores import *
 
 
+def high_score(level, shots):
+    total_shots = shots
+    all_ships_lenght = 17
+    if level == 'EASY':
+        level_multiplier = 100
+    elif level == 'MEDIUM':
+        level_multiplier = 200
+    elif level == 'HARD':
+        level_multiplier = 400
+    score = level_multiplier * all_ships_lenght / total_shots
+    return score
+
+
+def add_shot(shots):
+    shots += 1
+    return shots
+
+
 def press_enter_to_continue():
     input('Press enter to continue: ')
 
@@ -170,6 +188,7 @@ def computer_turn(computer_player, enemy):
 
 
 def single_game(difficulty_level):
+    shots = 0
     human_player = set_up_player()
     computer_player = ComputerPlayer(difficulty_level)
     computer_ocean = computer_player.get_ocean()
@@ -177,11 +196,14 @@ def single_game(difficulty_level):
 
     while True:
         human_turn(human_player, computer_player)
+        shots = add_shot(shots)
         if human_player.is_winner(computer_player):
-            score = player_score(12999, 12, difficulty_level, human_player.get_name())
-            high_scores_data = import_hall_of_fame('high_scores.csv', score)
-            print(get_highscore_table(high_scores_data, score, 'high_scores.csv'))
-            input()
+            score = high_score(difficulty_level, shots)
+            player_data = player_score(score, shots, difficulty_level, human_player.get_name())
+            high_scores_data = import_hall_of_fame('high_scores.csv', player_data)
+            print(get_highscore_table(high_scores_data, player_data, 'high_scores.csv'))
+            export_hall_of_fame('high_scores.csv', high_scores_data)
+            press_enter_to_continue()
             print_screen('you_win.txt')
             break
         computer_turn(computer_player, human_player)
@@ -216,16 +238,14 @@ def main():
 
     Press 1 to start multiplayer game
     Press 2 to start singleplayer game
-    Press 3 to learn how to play
-    Press 4 to see the Hall of Fame
     Press 0 to exit
 
     """
 
     difficulty_menu = """Choose difficulty level:
-    ==> press E to easy
-    ==> press M to medium
-    ==> press H to hard
+    ==> EASY
+    ==> MEDIUM
+    ==> HARD
     """
 
     print_screen('intro.txt')
@@ -239,16 +259,10 @@ def main():
 
         elif user_input == "2":
             difficulty_level = input(difficulty_menu).upper()
-            correct_levels = ("E", "M", "H")
+            correct_levels = ("EASY", "MEDIUM", "HARD")
             while difficulty_level not in correct_levels:
                 difficulty_level = input(difficulty_menu).upper()
             single_game(difficulty_level)
-
-        elif user_input == "3":
-            print_screen('how_to_play.txt')
-
-        elif user_input == '4':
-            print_hall_of_fame()
 
         elif user_input == "0":
             break

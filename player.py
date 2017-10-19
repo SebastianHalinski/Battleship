@@ -122,11 +122,11 @@ class ComputerPlayer(Player):
             return False
 
     def choose_shot(self):
-        if self.difficulty_level == 'E':
+        if self.difficulty_level == 'EASY':
             shot = self.choose_random_shot()
             return shot
 
-        elif self.difficulty_level == 'M':
+        elif self.difficulty_level == 'MEDIUM':
             if self.unsunk_hits:
                 for hit in self.unsunk_hits:
                     surroundings = ComputerPlayer.get_surroundings(*hit)
@@ -137,7 +137,7 @@ class ComputerPlayer(Player):
                 shot = self.choose_random_shot()
                 return shot
 
-        elif self.difficulty_level == 'H':
+        elif self.difficulty_level == 'HARD':
             if self.unsunk_hits:
                 if len(self.unsunk_hits) > 1:
                     for hit in self.unsunk_hits:
